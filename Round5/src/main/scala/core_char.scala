@@ -136,7 +136,7 @@ object core_char{
   }
 
 
-  def round_matrix(matrix : Array[Array[BitString]],a_bits : Int, b_bits : Int) : Array[Array[BitString]] ={
+  def round_matrix(matrix : Array[Array[BitString]],a_bits : Int, b_bits : Int) : Array[Array[BitString]] = {
     matrix.foreach(rows => rows.foreach(bitString => bitString.bits =  round_element(bitString,a_bits,b_bits).bits))
     matrix
   }
@@ -199,12 +199,12 @@ object core_char{
     * @param sigma seed for the function
     * @return a vector of d elements
     */
-  def permutation_tau_2(sigma : String):Array[Short] = {
-    val p1 = Array.fill[Short](d)(0)
-    drgb_init_customization(sigma,Array[Short](1).mkString)
+  def permutation_tau_2(sigma : String):Array[Char] = {
+    val p1 = Array.fill[Char](d)(0)
+    drgb_init_customization(sigma,Array[Char](1).mkString)
 
     0 until d foreach(i => {
-      var r :Short = 1
+      var r :Char = 1
       do {
         r = drgb_sample_16_2(q)
       }while(p1.contains(r))
@@ -250,7 +250,9 @@ object core_char{
     */
   def create_A(sigma: Array[Byte]): Array[Array[Polynome_char]] = {
     val nb_poly = d/n
-    val matrix =  Array.ofDim[Polynome_char](nb_poly,nb_poly)
+    val matrix =  Array.ofDim[Polynome_char](d,nb_poly)
+
+    if(tau != 0 && n != 0) tau = 0
 
     tau  match {
       case 0 =>
@@ -262,13 +264,10 @@ object core_char{
           case _ =>
             drgb_init(sigma.toString)
             (0 until d).foreach(a => {
-              val poly = new Polynome_char(Array[Char](),false,q)
+              val poly = new Polynome_char(Array.ofDim[Char](n),false,q)
               (0 until nb_poly).foreach(b =>{
                 matrix(a)(b) = poly
-                (0 until n).foreach(c =>{
-                  poly.coef(c) =drgb_sample_16_2(q).toChar
-                }
-                )
+                (0 until n).foreach( c => poly.coef(c) =  drgb_sample_16_2(q))
               })
 
             })
@@ -276,13 +275,13 @@ object core_char{
       case 1 =>
         val permut_vect = permutation_tau_1(sigma.map(_.toChar).mkString)
         (0 until d).foreach(i => (0 until d)
-          .foreach(j => matrix(i)(j) = new Polynome_char(Array[Char](((j + permut_vect(i)%d).toChar)),false,q )))
+          .foreach(j => matrix(i)(j) = new Polynome_char(Array[Char]((j + permut_vect(i)%d).toChar),false,q )))
       case 2 =>
         drgb_init(sigma.map(_.toChar).mkString)
         val a_vector = (for (i <- 0 until len_tau_2) yield drgb_sample_16_2(q)).toArray
         val p2 = permutation_tau_2(sigma.map(_.toChar).mkString)
         (0 until d).foreach(i => (0 until d)
-          .foreach(j => matrix(i)(j) = new Polynome_char(Array[Char](((j + p2(i)%q)).toChar),false,q )))
+          .foreach(j => matrix(i)(j) = new Polynome_char(Array[Char]((j + p2(i)%q).toChar),false,q )))
     }
     matrix
   }
@@ -291,23 +290,25 @@ object core_char{
   /**
     * Create the secret matrix S_T
     */
-  def create_S_T(seed : Array[Byte]): Array[Array[Char]] = {
+  def create_S_T(seed : Array[Byte]): Array[Array[Polynome_char]] = {
     drgb_init(seed.mkString)
     var matrix =  Array.ofDim[Char](n_bar,d)
     0 until n_bar foreach (a =>  matrix(a) = create_secret_vector(d,h))
     matrix
+    charMatrixToPolyMatrix(matrix, Char.MaxValue)
   }
 
 
   /**
     * Create the secret matreix S_T
     */
-  def create_R_T(seed : Array[Byte]): Array[Array[Char]] = {
+  def create_R_T(seed : Array[Byte]): Array[Array[Polynome_char]] = {
     drgb_init(seed.mkString)
 
     var matrix =  Array.ofDim[Char](m_bar,d)
     0 until m_bar foreach (a => matrix(a) = create_secret_vector(d,h))
     matrix
+    charMatrixToPolyMatrix(matrix,Char.MaxValue)
   }
 
   def charArrayTobitStringArray(a :Array[Char]) : Array[BitString] = {
@@ -316,17 +317,17 @@ object core_char{
     array
   }
 
-  def charMatrixToPolyMatrix(a :Array[Array[Char]]) : Array[Array[Polynome_char]] = {
+  def charMatrixToPolyMatrix(a :Array[Array[Char]], mod : Int) : Array[Array[Polynome_char]] = {
     val nb_row = a.length
     val nb_col = a(0).length
     val nbr_elem = nb_col * nb_row
     val matrix = Array.ofDim[Polynome_char](a.length,nb_col/n)
-    var poly = new Polynome_char(Array.ofDim[Char](n),false,Short.MaxValue)
+    var poly = new Polynome_char(Array.ofDim[Char](n),false,mod)
     (0 until nbr_elem).foreach(i => {
       poly.coef(i%n) =  a(i/nb_col)(i%nb_col)
       if(n == 1 || i % n == 0){
         matrix(i/nb_col)(i%nb_col) = poly
-        poly = new Polynome_char(Array.ofDim[Char](n),false,Short.MaxValue)
+        poly = new Polynome_char(Array.ofDim[Char](n),false,mod)
       }
     })
     matrix

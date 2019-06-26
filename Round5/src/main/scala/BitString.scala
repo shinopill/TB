@@ -50,6 +50,11 @@ class BitString(string:String) {
     //Integer.parseInt(booleanToString(bits.reverse),2)
   }
 
+  def toByteArray : Array[Byte]  = {
+    var list = (0 until math.ceil(bits.length/8).toInt -1) map (x => Integer.parseInt(BitString.booleanToString(bits.slice(x*8,(x+1)*8).reverse)).toByte)
+    list = list :+ Integer.parseInt(BitString.booleanToString(bits.slice(math.ceil(bits.length/8).toInt -1, bits.length).reverse)).toByte
+    list.toArray
+  }
   /**
     *
     * @return the string corresponding to the value of the BitString example 1000001 = A
@@ -120,6 +125,15 @@ class BitString(string:String) {
     sb.toString()
   }
 
+  def == (bitString: BitString) : Boolean = {
+    bits zip bitString.bits forall( i => i._1 == i._2 )
+  }
+
+  def cond_mem_copy(bitString : BitString, b : Boolean) = {
+    bits = if (b) bitString.bits else bits
+    this
+  }
+
 }
 
 
@@ -145,6 +159,11 @@ object BitString{
     sb.toString()
   }
 
+  def byteArrayToBitString(a :Array[Byte]) : BitString = {
+    val b = new BitString("")
+    a foreach (i => b.::(BitString.intToBitString(i.toInt)))
+    b
+  }
 }
 
 

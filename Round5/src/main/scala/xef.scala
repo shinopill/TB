@@ -23,6 +23,7 @@ object xef {
       case 2 => (1, 0)
       case 4 => (3, 0)
       case 5 => (4, 0)
+      case _ => (6,6)
     }
     case 192 => (4, 1)
     case 256 => (4, 2)
@@ -72,7 +73,7 @@ object xef {
           case _ => sum
         }
       })
-      msg.bits :+ (if (sum > f ) !m1.bits(i) else m1.bits(i))
+      msg.bits = msg.bits :+ (if (sum > f ) !m1.bits(i) else m1.bits(i))
     })
     msg
   }

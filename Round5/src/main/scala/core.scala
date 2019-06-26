@@ -168,12 +168,12 @@ object core {
     * @param sigma seed for the function
     * @return a vector of d elements
     */
-  def permutation_tau_2(sigma : String):Array[Short] = {
-    val p1 = Array.fill[Short](d)(0)
+  def permutation_tau_2(sigma : String):Array[Char] = {
+    val p1 = Array.fill[Char](d)(0)
     drgb_init_customization(sigma,Array[Short](1).mkString)
 
     0 until d foreach(i => {
-      var r :Short = 1
+      var r :Char = 1
       do {
          r = drgb_sample_16_2(q)
       }while(p1.contains(r))
@@ -219,7 +219,7 @@ object core {
     */
   def create_A(sigma: Array[Byte]): Array[Array[Polynome]] = {
     val nb_poly = d/n
-    val matrix =  Array.ofDim[Polynome](nb_poly,d)
+    val matrix =  Array.ofDim[Polynome](d,nb_poly)
 
     tau  match {
       case 0 =>
@@ -250,7 +250,7 @@ object core {
         drgb_init(sigma.map(_.toChar).mkString)
         val a_vector = (for (i <- 0 until len_tau_2) yield drgb_sample_16_2(q)).toArray
         val p2 = permutation_tau_2(sigma.map(_.toChar).mkString)
-        (0 until d).foreach(i => (0 until d)
+        (0 until d).foreach(i => (0 until nb_poly)
           .foreach(j => matrix(i)(j) = new Polynome(Array[BitString](BitString.intToBitString((j + p2(i)%q))),false,q )))
     }
     matrix
@@ -275,5 +275,6 @@ object core {
     0 until m_bar foreach (a => 0 until d/n foreach (b => matrix(a)(b) = create_secret_vector(d,h)))
     matrix
   }
+
 
 }

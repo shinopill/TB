@@ -1,8 +1,11 @@
-object params {
+object   params {
     var tau = 0
     var security_level = ""
 
     lazy val d = security_level match{
+        case "R5N1_1_KEM_0d" => 594
+        case "R5N1_3_KEM_0d" => 881
+        case "R5N1_5_KEM_0d" => 1186
         case "R5ND_1_KEM_0d" => 618
         case "R5ND_3_KEM_0d" => 768
         case "R5ND_5_KEM_0d" => 1018
@@ -12,6 +15,9 @@ object params {
         case _ => 0
     } //number of coeffs in a Polynomial
     lazy val n = security_level match{
+        case "R5N1_1_KEM_0d" => 1
+        case "R5N1_3_KEM_0d" => 1
+        case "R5N1_5_KEM_0d" => 1
         case "R5ND_1_KEM_0d" => 618
         case "R5ND_3_KEM_0d" => 768
         case "R5ND_5_KEM_0d" => 1018
@@ -21,6 +27,9 @@ object params {
         case _ => 0
     } //ring based if > 1
     lazy val h = security_level match{
+        case "R5N1_1_KEM_0d" => 238
+        case "R5N1_3_KEM_0d" => 238
+        case "R5N1_5_KEM_0d" => 712
         case "R5ND_1_KEM_0d" => 104
         case "R5ND_3_KEM_0d" => 384
         case "R5ND_5_KEM_0d" => 428
@@ -31,6 +40,9 @@ object params {
     } //Number of non-zero values per column in secret matrix
 
     lazy val q_bits = security_level match{
+        case "R5N1_1_KEM_0d" => 13
+        case "R5N1_3_KEM_0d" => 13
+        case "R5N1_5_KEM_0d" => 15
         case "R5ND_1_KEM_0d" => 11
         case "R5ND_3_KEM_0d" => 13
         case "R5ND_5_KEM_0d" => 14
@@ -42,6 +54,9 @@ object params {
     lazy val q = math.pow(2,q_bits).toInt
 
     lazy val p_bits = security_level match{
+        case "R5N1_1_KEM_0d" => 10
+        case "R5N1_3_KEM_0d" => 10
+        case "R5N1_5_KEM_0d" => 12
         case "R5ND_1_KEM_0d" => 8
         case "R5ND_3_KEM_0d" => 9
         case "R5ND_5_KEM_0d" => 9
@@ -53,6 +68,9 @@ object params {
     lazy val p = math.pow(2,p_bits).toInt
 
     lazy val t_bits = security_level match{
+        case "R5N1_1_KEM_0d" => 7
+        case "R5N1_3_KEM_0d" => 7
+        case "R5N1_5_KEM_0d" => 7
         case "R5ND_1_KEM_0d" => 4
         case "R5ND_3_KEM_0d" => 4
         case "R5ND_5_KEM_0d" => 4
@@ -64,6 +82,9 @@ object params {
     lazy val t = math.pow(2,t_bits).toInt
 
     lazy val b_bits: Int  = security_level match{
+        case "R5N1_1_KEM_0d" => 3
+        case "R5N1_3_KEM_0d" => 3
+        case "R5N1_5_KEM_0d" => 4
         case "R5ND_1_KEM_0d" => 1
         case "R5ND_3_KEM_0d" => 1
         case "R5ND_5_KEM_0d" => 1
@@ -74,6 +95,9 @@ object params {
     }
     lazy val b = math.pow(2,b_bits).toInt
     lazy val n_bar = security_level match{
+        case "R5N1_1_KEM_0d" => 7
+        case "R5N1_3_KEM_0d" => 8
+        case "R5N1_5_KEM_0d" => 8
         case "R5ND_1_KEM_0d" => 1
         case "R5ND_3_KEM_0d" => 1
         case "R5ND_5_KEM_0d" => 1
@@ -84,6 +108,9 @@ object params {
         case _ => 0
     }
     lazy val m_bar = security_level match{
+        case "R5N1_1_KEM_0d" => 7
+        case "R5N1_3_KEM_0d" => 8
+        case "R5N1_5_KEM_0d" => 8
         case "R5ND_1_KEM_0d" => 1
         case "R5ND_3_KEM_0d" => 1
         case "R5ND_5_KEM_0d" => 1
@@ -95,6 +122,9 @@ object params {
 
 
     lazy val f = security_level match{
+        case "R5N1_1_KEM_0d" => 0
+        case "R5N1_3_KEM_0d" => 0
+        case "R5N1_5_KEM_0d" => 0
         case "R5ND_1_KEM_0d" => 0
         case "R5ND_3_KEM_0d" => 0
         case "R5ND_5_KEM_0d" => 0
@@ -106,6 +136,9 @@ object params {
 
 
     lazy val xe = security_level match{
+        case "R5N1_1_KEM_0d" => 0
+        case "R5N1_3_KEM_0d" => 0
+        case "R5N1_5_KEM_0d" => 0
         case "R5ND_1_KEM_0d" => 0
         case "R5ND_3_KEM_0d" => 0
         case "R5ND_5_KEM_0d" => 0
@@ -115,6 +148,9 @@ object params {
         case _ => 0
     }
     lazy val kappa = security_level match{
+        case "R5N1_1_KEM_0d" => 128
+        case "R5N1_3_KEM_0d" => 192
+        case "R5N1_5_KEM_0d" => 256
         case "R5ND_1_KEM_0d" => 128
         case "R5ND_3_KEM_0d" => 192
         case "R5ND_5_KEM_0d" => 256
@@ -125,6 +161,9 @@ object params {
     }
 
     lazy val mu = security_level match{
+        case "R5N1_1_KEM_0d" => 43
+        case "R5N1_3_KEM_0d" => 64
+        case "R5N1_5_KEM_0d" => 64
         case "R5ND_1_KEM_0d" => 128
         case "R5ND_3_KEM_0d" => 192
         case "R5ND_5_KEM_0d" => 156

@@ -57,7 +57,7 @@ object DRGB {
     * @param range the range you want to use must be smaller than 2^16^
     * @return a random number
     */
-  def drgb_sampler16(range : Int): Short ={
+  def drgb_sampler16(range : Int): Char ={
     val range_divisor = (math.pow(2,16)/range).asInstanceOf[Int]
 
     var x : Int = 0
@@ -67,7 +67,7 @@ object DRGB {
       x += Short.MaxValue
     }while(x >= range * range_divisor)
 
-    Integer.toUnsignedLong(x/range_divisor).toShort
+    Integer.toUnsignedLong(x/range_divisor).toChar
   }
 
   /**
@@ -75,13 +75,13 @@ object DRGB {
     * @param range the range you want
     * @return a random number
     */
-  def drgb_sample_16_2(range : Int): Short = {
+  def drgb_sample_16_2(range : Int): Char = {
     val nbr_bits = math.ceil(math.log(range)/math.log(2)).toInt
     var array = drgb(2)
     var x = BigInt(array).toShort
     val bits = BitString.intToBitString(x)
     (nbr_bits until 16).foreach(a => if(a < bits.bits.length) bits.bits =  bits.bits.updated(a,false) else bits.:+("0"))
-    bits.toInt.toShort
+    bits.toInt.toChar
   }
 
   /**
@@ -93,8 +93,15 @@ object DRGB {
     */
   def hash(output_len_bytes:Int, input:String,customisation_string:String):Array[Byte] ={
     var array =  Array.ofDim[Byte](output_len_bytes)
-    val shake = if (customisation_string == "" ) new SHAKEDigest(kappa) else new CSHAKEDigest(kappa,"".getBytes(),customisation_string.getBytes())
-    shake.doFinal(array,output_len_bytes)
+    val shake_length = kappa match {
+      case 128 => 128
+      case _ if kappa > 128 => 256
+      case _ => throw new Exception("Kappa has not the right size")
+    }
+    val shake = if (customisation_string == "" ) new SHAKEDigest(shake_length) else new CSHAKEDigest(shake_length,"".getBytes(),customisation_string.getBytes())
+    val bytes = input.toCharArray map (a => a.toByte)
+    shake.update(bytes,0,bytes.length)
+    shake.doFinal(array,0)
     array
   }
 /*
@@ -112,7 +119,7 @@ object DRGB {
     Security.addProvider(new BouncyCastleProvider)
 
     var random  = new Array[Byte](len)
-    val key = new SecretKeySpec(hash(kappa,"","").toString)
+    val key = new SecretKeySpec(hash(kappa,"", "").mkString)
     val aes = Cipher.getInstance("AES/CTR/NoPadding",BouncyCastleProvider.PROVIDER_NAME)
     aes.init(Cipher.ENCRYPT_MODE,key)
     aes.doFinal()

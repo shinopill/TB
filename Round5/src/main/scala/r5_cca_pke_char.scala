@@ -11,7 +11,7 @@ object r5_cca_pke_char {
     val (c1, k) = r5_cca_kem_char.encapsulate(pk)
 
     val c2 = r5_dem.dem(k, 16, m)
-    val ct = c1.::(BitString.byteArrayToBitString(c2))
+    val ct = c1.::(BitString.byteArrayToBitString(c2,8))
     val clen = c2.length + math.ceil(kappa/8 + ( m_bar * d/n * n * p_bits  + mu * t_bits)/8).toInt
     (ct,clen)
   }

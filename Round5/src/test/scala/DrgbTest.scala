@@ -2,6 +2,7 @@ import org.scalatest.FlatSpec
 import DRGB.{drgb,drgb_init,drgb_init_customization}
 
 class DrgbTest extends FlatSpec{
+  /*
   "A true DPRG" should "give the same output between 2 initializations" in {
     drgb_init_customization("djdjd","jfjf")
     val x = drgb(2)
@@ -24,4 +25,6 @@ class DrgbTest extends FlatSpec{
     val equal  = z.forall( a => a._1 == a._2)
     assert(equal)
   }
+
+   */
 }

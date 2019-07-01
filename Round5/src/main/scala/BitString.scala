@@ -47,12 +47,11 @@ class BitString(string:String) {
     */
   def toInt: Int = {
     java.lang.Long.parseLong(booleanToString(bits.reverse),2).toInt
-    //Integer.parseInt(booleanToString(bits.reverse),2)
   }
 
   def toByteArray : Array[Byte]  = {
-    var list = (0 until math.ceil(bits.length/8).toInt -1) map (x => Integer.parseInt(BitString.booleanToString(bits.slice(x*8,(x+1)*8).reverse)).toByte)
-    list = list :+ Integer.parseInt(BitString.booleanToString(bits.slice(math.ceil(bits.length/8).toInt -1, bits.length).reverse)).toByte
+    var list = (0 until math.floor(bits.length/8).toInt) map (x => Integer.parseInt(BitString.booleanToString(bits.slice(x*8,(x+1)*8).reverse),2).toByte)
+    if(bits.length%8 != 0) list = list :+ Integer.parseInt(BitString.booleanToString(bits.slice(bits.length - bits.length%8, bits.length).reverse),2).toByte
     list.toArray
   }
   /**
@@ -66,6 +65,7 @@ class BitString(string:String) {
     (0 until bits.length/8).foreach(i => {
       sb.append(Integer.parseInt(booleanToString(bits.slice(i*8,(1+i)*8).reverse),2).toChar)
     })
+    if(bits.length%8 != 0) sb.append(Integer.parseInt(booleanToString(bits.slice(bits.length - bits.length%8,bits.length).reverse),2).toChar)
     sb.toString()
   }
 
@@ -84,7 +84,7 @@ class BitString(string:String) {
     * @return the concatenation of both BitString
     */
   def ::(bitString: BitString): BitString ={
-    bits = bits ::: bitString.bits
+    bits =  bitString.bits.:::(bits)
     this
   }
 
@@ -134,6 +134,7 @@ class BitString(string:String) {
     this
   }
 
+
 }
 
 
@@ -159,11 +160,14 @@ object BitString{
     sb.toString()
   }
 
-  def byteArrayToBitString(a :Array[Byte]) : BitString = {
+  def byteArrayToBitString(a :Array[Byte], elem_size : Int ) : BitString = {
     val b = new BitString("")
-    a foreach (i => b.::(BitString.intToBitString(i.toInt)))
+    a.reverse foreach (i => Util.appendZeros(Integer.toBinaryString(i),elem_size) foreach (bit => b.+:(bit.toString)))
     b
   }
+
+
+
 }
 
 

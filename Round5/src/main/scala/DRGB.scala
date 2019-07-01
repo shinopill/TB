@@ -14,19 +14,19 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider
 
 object DRGB {
   var random_generator : SHAKEDigest = _
-
+  lazy val kapp_for_drng = if (kappa > 128) 256 else 128
   /**
     * Initialize the DRBG
     * @param seed the mandatory seed
     * @param custom_string the custom string (optional)
     */
-  def drgb_init_customization(seed: String, custom_string : String) = {
-    custom_string match {
-      case ("") => drgb_init(seed)
-      case _ =>
-        random_generator = new CSHAKEDigest(kappa, "".getBytes(), custom_string.getBytes())
-        random_generator.update(seed.getBytes(), 0, seed.length)
-        random_generator.update(custom_string.getBytes(),0,custom_string.length)
+  def drgb_init_customization(seed: Array[Byte], custom_string : Array[Byte]) = {
+    custom_string.isEmpty match {
+      case true => drgb_init(seed)
+      case false =>
+        random_generator = new CSHAKEDigest(kapp_for_drng, "".getBytes(), custom_string)
+        random_generator.update(seed, 0, seed.length)
+        //random_generator.update(custom_string.getBytes(),0,custom_string.length)
     }
   }
 
@@ -34,9 +34,9 @@ object DRGB {
     * Initialze the DRBG with a seed
     * @param seed the wanted seed
     */
-  def drgb_init(seed: String) = {
-    random_generator = new SHAKEDigest(kappa)
-    random_generator.update(seed.getBytes(), 0, seed.length)
+  def drgb_init(seed: Array[Byte]) = {
+    random_generator = new SHAKEDigest(kapp_for_drng)
+    random_generator.update(seed, 0, seed.length)
   }
 
   /**
@@ -63,8 +63,7 @@ object DRGB {
     var x : Int = 0
 
     do{
-      x = BigInt(drgb(2)).toInt
-      x += Short.MaxValue
+      x = BigInt(drgb(2).reverse).toChar
     }while(x >= range * range_divisor)
 
     Integer.toUnsignedLong(x/range_divisor).toChar
@@ -78,9 +77,11 @@ object DRGB {
   def drgb_sample_16_2(range : Int): Char = {
     val nbr_bits = math.ceil(math.log(range)/math.log(2)).toInt
     var array = drgb(2)
-    var x = BigInt(array).toShort
+    var x = BigInt(array.reverse).toChar
     val bits = BitString.intToBitString(x)
     (nbr_bits until 16).foreach(a => if(a < bits.bits.length) bits.bits =  bits.bits.updated(a,false) else bits.:+("0"))
+    //TODO effacer pour debug
+    val y = bits.toInt.toChar
     bits.toInt.toChar
   }
 
@@ -93,12 +94,7 @@ object DRGB {
     */
   def hash(output_len_bytes:Int, input:String,customisation_string:String):Array[Byte] ={
     var array =  Array.ofDim[Byte](output_len_bytes)
-    val shake_length = kappa match {
-      case 128 => 128
-      case _ if kappa > 128 => 256
-      case _ => throw new Exception("Kappa has not the right size")
-    }
-    val shake = if (customisation_string == "" ) new SHAKEDigest(shake_length) else new CSHAKEDigest(shake_length,"".getBytes(),customisation_string.getBytes())
+    val shake = if (customisation_string == "" ) new SHAKEDigest(kapp_for_drng) else new CSHAKEDigest(kapp_for_drng,"".getBytes(),customisation_string.getBytes())
     val bytes = input.toCharArray map (a => a.toByte)
     shake.update(bytes,0,bytes.length)
     shake.doFinal(array,0)

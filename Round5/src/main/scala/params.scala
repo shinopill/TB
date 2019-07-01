@@ -175,9 +175,10 @@ object   params {
 
 
     lazy val z = math.max(p,t*q/p)
-    lazy val h_1 = q/(2*p)
+    lazy val h_1 = q/(2*p) //rounding constant
     lazy val h_2 = q/(2*z)
-    lazy val A_master = Array.ofDim[BitString](d,d)
+    lazy val h_3 = p/(2*t) + p/(2*b) - q/(2*z)
+    lazy val h_4 = q/(2*p) + q/(2*z)
     lazy val len_tau_2 = math.pow(2,11).toInt
 
 

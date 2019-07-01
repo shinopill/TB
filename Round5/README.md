@@ -1,9 +1,11 @@
 # Round 5
 
-## Files
+## Installation for 256 bits AES
 
-All the files with _char uses chars as polynomial coefficients instead of BitStrings. This is a test to see if i can improve the speed of the algorithm compared to the use of BitStrings
+You need to go to https://www.oracle.com/technetwork/java/javase/downloads/jce-all-download-5170447.html in order to get the security package to allow 256 bits key length for AES and follow the instutructions in the Readme.
 
 
 ## Current issue  
-Problems while unpacking_ct
+Some KAT have keygen problem 
+
+

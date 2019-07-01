@@ -10,16 +10,18 @@ object r5_cpa_kem_char {
   }
 
   def encapsulate(pk:BitString) ={
-    val m = random.generateSeed(kappa)
-    val rho = random.generateSeed(kappa)
-    val  ct = r5_cpa_pke_char.encrypt(pk,new BitString(m.map(_.toChar).mkString),rho)
-    val k = hash(kappa/8,"","")
+    val m = NIST_RNG.randombytes(kappa/8)
+    Util.printHex(m)
+    val rho = NIST_RNG.randombytes(kappa/8)
+    Util.printHex(rho)
+    val  ct = r5_cpa_pke_char.encrypt(pk,m,rho)
+    val k = hash(kappa/8,BitString.byteArrayToBitString(m,8).::(ct).bitStringToString,"")
     (ct,k)
   }
 
   def decapsulate(ct:BitString,sk:Array[Byte]) ={
     val m = r5_cpa_pke_char.decrypt(sk,ct)
-    val k = hash(kappa,"","")
+    val k = hash(kappa/8,m.concat(ct.bitStringToString),"")
     k
   }
 

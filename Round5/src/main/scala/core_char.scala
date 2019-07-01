@@ -234,15 +234,17 @@ object core_char {
     * @return a vector of d elements
     */
   def permutation_tau_2(sigma: Array[Byte]): Array[Char] = {
-    val p2 = Array.fill[Char](d)(0)
+    val p2 = Array.ofDim[Char](d)
+    val p2_drawn = Array.fill[Boolean](len_tau_2)(false)
     drgb_init_customization(sigma, Array[Byte](0, 1))
 
     0 until d foreach (i => {
       var r: Char = 1
       do {
         r = drgb_sample_16_2(len_tau_2)
-      } while (p2.contains(r))
+      } while (p2_drawn(r))
       p2(i) = r
+      p2_drawn(r) = true
     })
     p2
   }
@@ -315,7 +317,7 @@ object core_char {
         (0 until d).foreach(i => (0 until d)
           .foreach(j => matrix(i)(j) = new Polynomial_char(Array[Char]((j + permut_vect(i) % d).toChar), false, q)))
       case 2 =>
-        val a_master = (for (i <- 0 until len_tau_2) yield drgb_sample_16_2(q)).toArray
+        val a_master =  DRGB.drgb_sample_16_2_all_size(q,len_tau_2)  //(for (i <- 0 until len_tau_2) yield drgb_sample_16_2(q)).toArray
         val p2 = permutation_tau_2(sigma)
         (0 until d).foreach(i => (0 until d)
           .foreach(j => matrix(i)(j) = new Polynomial_char(Array[Char](a_master((j + p2(i)) % len_tau_2)), false, q)))

@@ -11,12 +11,13 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider
 object NIST_RNG {
 
   Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider())
-  var aes : Cipher = _
   var aes_ecb : Cipher = _
-  var iv_bytes = Array.fill[Byte](16)(0)
-  var keyBytes = Array.fill[Byte](32)(0)
+  var iv_bytes : Array[Byte] = _
+  var keyBytes : Array[Byte] = _
 
   def init(seed : Array[Byte]) = {
+    keyBytes = Array.fill[Byte](32)(0)
+    iv_bytes = Array.fill[Byte](16)(0)
     AES_CTR_DRGB_Update(seed)
   }
 
@@ -26,7 +27,7 @@ object NIST_RNG {
     while(byte_to_get != 0 ) {
       incIV
       val rand = AES256_ECB
-      if(length > 15){
+      if(byte_to_get > 15){
         random_bytes =  random_bytes ++  rand
         byte_to_get -= 16
       }else {
@@ -63,9 +64,9 @@ object NIST_RNG {
   def incIV : Unit ={
     var done = false
     for (j <- 15 until 0 by -1 ; if !done) {
-        if (iv_bytes(j) == 255)
+        if (iv_bytes(j) == -1)
           iv_bytes(j) = 0
-        else {
+        else{
           iv_bytes(j) = (iv_bytes(j) + 1).toByte
           done = true
       }

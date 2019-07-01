@@ -1,8 +1,5 @@
-import java.math.BigInteger
-import java.security.SecureRandom
 
 import core_char._
-import org.bouncycastle.crypto.prng.EntropySource
 import params._
 import pack_char._
 import xef._
@@ -11,10 +8,12 @@ import xef._
 object r5_cpa_pke_char {
   def keygen() = {
     val sigma = NIST_RNG.randombytes(kappa/8)
-    Util.printHex(sigma)
+     //Util.printHex(sigma)
     val A = create_A(sigma)
+
   //  A.foreach(b => b.foreach(c => Util.printHex(c.coef)))
     val sk = NIST_RNG.randombytes(kappa/8)
+   // Util.printHex(sk)
     val S_T = create_S_T(sk)
     val S = S_T.transpose
     //S.foreach(b => b.foreach(c => Util.printHex(c.coef)))
@@ -22,6 +21,7 @@ object r5_cpa_pke_char {
  //   B.foreach(c => c.foreach(a => a.coef.foreach(q => print(q.toInt + " "))))
     B = round_matrix(B, q_bits, p_bits,h_1)
     val pk = pack_pk(sigma, B)
+
     (pk, sk)
   }
 
@@ -45,7 +45,6 @@ object r5_cpa_pke_char {
     val m_bits = BitString.byteArrayToBitString(m,8)
     m1.bits  =  m1.bits ::: m_bits.bits
     (0 until xe).foreach(i => m1.:+("0"))
-    Util.printHex(m)
     if (xe != 0) m1 = compute(m1) else (0 until 8) foreach(_ => m1.:+("0")) //Need to add a byte to the end if xe = 0 in order to have enough byte to add_msg
     val y = m1.toByteArray
     val v = add_msg(x,m1,b_bits,t_bits)

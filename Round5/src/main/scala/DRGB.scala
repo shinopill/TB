@@ -78,11 +78,25 @@ object DRGB {
     val nbr_bits = math.ceil(math.log(range)/math.log(2)).toInt
     var array = drgb(2)
     var x = BigInt(array.reverse).toChar
+    /*
     val bits = BitString.intToBitString(x)
     (nbr_bits until 16).foreach(a => if(a < bits.bits.length) bits.bits =  bits.bits.updated(a,false) else bits.:+("0"))
     //TODO effacer pour debug
     val y = bits.toInt.toChar
     bits.toInt.toChar
+     */
+    (x & getRange(nbr_bits)).toChar
+  }
+
+  def drgb_sample_16_2_all_size(range:Int, nb_elem:Int): Array[Char] = {
+    val nbr_bits = math.ceil(math.log(range)/math.log(2)).toInt
+    var array = drgb(nb_elem*2)
+    val array_char = (0 until nb_elem) map(a => {
+      var x =  BigInt(array.slice(2 * a, 2 * a + 2).reverse).toChar
+      var y = x & getRange(nbr_bits)
+      y.toChar
+    })
+    array_char.toArray
   }
 
   /**
@@ -97,8 +111,31 @@ object DRGB {
     val shake = if (customisation_string == "" ) new SHAKEDigest(kapp_for_drng) else new CSHAKEDigest(kapp_for_drng,"".getBytes(),customisation_string.getBytes())
     val bytes = input.toCharArray map (a => a.toByte)
     shake.update(bytes,0,bytes.length)
-    shake.doFinal(array,0)
+    shake.doFinal(array,0,output_len_bytes)
     array
+  }
+
+  private def getRange(range : Int) = {
+    val s = range match{
+      case 0  => 0x0000
+      case 1  => 0x0001
+      case 2  => 0x0003
+      case 3  => 0x0007
+      case 4  => 0x000F
+      case 5  => 0x001F
+      case 6  => 0x003f
+      case 7  => 0x007f
+      case 8  => 0x01FF
+      case 9  => 0x01FF
+      case 10 => 0x03FF
+      case 11 => 0x07FF
+      case 12 => 0x0FFF
+      case 13 => 0x1FFF
+      case 14 => 0x3FFF
+      case 15 => 0x7FFF
+      case 16 => 0xFFFF
+    }
+    s
   }
 /*
   /**

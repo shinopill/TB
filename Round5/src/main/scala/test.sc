@@ -1,23 +1,6 @@
-
-val s = "01001"
-Integer.parseInt(s,2)
-
-
-val q = true
-q.booleanValue().toString
-
-val t = Array[Boolean](true,false,true)
-val a = 4096
-val b = 2048
-print(Integer.toBinaryString(a))
-print(Integer.toBinaryString(b))
-
-
-
-
-
-
-
+val c = Array[Byte](20,-71)
+BigInt(c.reverse).toChar.toInt
+val x = ((c(1).toChar & 0xFF) << 8 )+ c(0)
 
 
 

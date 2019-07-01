@@ -2,7 +2,7 @@ import params.n
 
 class Polynomial_char(val coef : Array[Char], val isN : Boolean, val mod : Int ) {
   def +(b : Polynomial_char):Polynomial_char = {
-    new Polynomial_char((coef zip b.coef).map(a => ((a._1 + a._2).toChar % mod).toChar),isN,mod)
+    new Polynomial_char((coef zip b.coef).map(a => ((a._1 + a._2) % mod).toChar),isN,mod)
   }
 
 
@@ -21,7 +21,7 @@ class Polynomial_char(val coef : Array[Char], val isN : Boolean, val mod : Int )
     (0 until coef.length) foreach(i => {
       (0 until b.coef.length) foreach(j => {
           var power = (i + j) % n
-          array(power) = ((array(power) + coef(i) * b.coef(j)).toChar % mod).toChar
+          array(power) = ((array(power) + coef(i) * b.coef(j)) % mod).toChar
         })
       })
     new Polynomial_char(array,isN,mod)

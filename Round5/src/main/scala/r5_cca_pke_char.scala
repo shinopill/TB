@@ -1,4 +1,4 @@
-import org.bouncycastle.crypto.prng.EntropySource
+
 import params.{d, kappa, m_bar, mu, n, p_bits, t_bits}
 
 object r5_cca_pke_char {
@@ -7,7 +7,7 @@ object r5_cca_pke_char {
     val (pk,sk) = r5_cca_kem_char.keygen
     (pk,sk)
   }
-  // try to check why +16 byte (probanly tag)
+
   def  encrypt(m : Array[Byte], pk : BitString) = {
     val (c1, k) = r5_cca_kem_char.encapsulate(pk)
     val c2 = r5_dem.dem(k, kappa/8, m)

@@ -28,9 +28,6 @@ object r5_cca_kem_char {
     val q = ct.toByteArray
     val L = BitString.byteArrayToBitString(L_g_rho.slice(0,kappa/8),8)
     ct.::(g)
-    val g_byte = g.toByteArray
-    val q2 = ct.toByteArray
-    val ct_byte =  q ++ g_byte
     val k = hash(kappa/8,L.::(ct).bitStringToString,"")
     (ct,k)
   }

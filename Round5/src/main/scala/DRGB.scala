@@ -108,7 +108,7 @@ object DRGB {
     */
   def hash(output_len_bytes:Int, input:String,customisation_string:String):Array[Byte] ={
     var array =  Array.ofDim[Byte](output_len_bytes)
-    val shake = if (customisation_string == "" ) new SHAKEDigest(kapp_for_drng) else new CSHAKEDigest(kapp_for_drng,"".getBytes(),customisation_string.getBytes())
+    val shake =  new CSHAKEDigest(kapp_for_drng,"".getBytes(),customisation_string.getBytes())
     val bytes = input.toCharArray map (a => a.toByte)
     shake.update(bytes,0,bytes.length)
     shake.doFinal(array,0,output_len_bytes)

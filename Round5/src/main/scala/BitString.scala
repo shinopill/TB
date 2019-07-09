@@ -28,11 +28,7 @@ class BitString(string:String) {
   def xor(bitString: BitString)  ={
     val result = new BitString("")
     if(bits.length == bitString.bits.length){
-      var result_bool = List.empty[Boolean]
-      bits.indices foreach  (x => x match {
-        case x if bits(x) ==  bitString.bits(x) =>  result_bool = result_bool :+ false
-        case _ => result_bool = result_bool :+ true
-      })
+      var result_bool = bits zip bitString.bits map (a => a._1 ^ a._2)
       val s = booleanToString(result_bool)
       s.foreach(x =>  result :+ x.toString )
       result
@@ -130,7 +126,7 @@ class BitString(string:String) {
   }
 
   def cond_mem_copy(bitString : BitString, b : Boolean) = {
-    bits = if (b) bitString.bits else bits
+    bits = if (!b) bitString.bits else bits
     this
   }
 

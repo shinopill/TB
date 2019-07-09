@@ -50,15 +50,15 @@ object pack_char {
     * @return a string corresponding to U||v
     */
   def pack_ct(U: Array[Array[Polynomial_char]], v: Array[BitString]): BitString = {
-    val U_bits = d / n * m_bar * n * p_bits / 8
     var b = new BitString("")
     U.foreach(x => x.foreach(y => y.coef.foreach(z => {
       val temp = new BitString("")
       Util.appendZeros(z.toBinaryString, p_bits).foreach(c => temp.+:(c.toString))
       b = b.::(temp)
     })))
-    (0 until (d / n * m_bar * n * p_bits) % 8) foreach (_ => b.:+("0"))
+    (0 until ((8-(b.bits.length % 8)) %8)) foreach (_ => b.:+("0"))
     v.foreach(x => b.::(x))
+    (0 until ((8-(b.bits.length % 8)) %8)) foreach (_ => b.:+("0"))
     b
   }
 
@@ -85,11 +85,11 @@ object pack_char {
     * @return a tuple with (sigma,matrix B)
     */
   def unpack_pk(pk: BitString, sigma_size: Int, B_element: Int, B_element_bits: Int): (BitString, Array[Array[Polynomial_char]]) = {
-    val b_nb_row = B_element / m_bar / n
-    val matrix = Array.fill[Polynomial_char](b_nb_row, m_bar)(new Polynomial_char(Array.ofDim[Char](n), false, math.pow(2, B_element_bits).toInt))
+    val b_nb_row = B_element / n_bar / n
+    val matrix = Array.ofDim[Polynomial_char](b_nb_row, m_bar)
     (0 until b_nb_row).foreach(i => {
       (0 until m_bar).foreach(j => {
-        val poly = new Polynomial_char(Array.ofDim[Char](n), false, q)
+        val poly = new Polynomial_char(Array.ofDim[Char](n), f != 0 && xe != 0, q)
         (0 until n).foreach(k => {
           val bits = new BitString("")
           bits.bits = pk.bits.slice(sigma_size * 8 + (i * m_bar)  *B_element_bits * n + j * B_element_bits * n + k * B_element_bits, sigma_size * 8 + (i * m_bar) * B_element_bits * n + j * B_element_bits * n + (k + 1) * B_element_bits)
@@ -118,7 +118,7 @@ object pack_char {
   def unpack_ct(ct: BitString, u_elem: Int, u_size: Int, v_elem: Int, v_size: Int) = {
     val u_nb_col = u_elem / m_bar / n
     val matrix = Array.ofDim[Polynomial_char](m_bar, u_nb_col)
-    val U_size = u_elem * u_size + u_elem * u_size % 8
+    val U_size = u_elem * u_size + ((8- (u_elem * u_size % 8)) % 8)
 
     (0 until m_bar).foreach(i => {
       (0 until u_nb_col).foreach(j => {

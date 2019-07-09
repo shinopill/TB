@@ -3,6 +3,8 @@ BigInt(c.reverse).toChar.toInt
 val x = ((c(1).toChar & 0xFF) << 8 )+ c(0)
 
 
+(Char.MaxValue * 2 + 3).toChar.toInt
+(-1 * 2 + 3 ).toChar.toInt
 
 
 

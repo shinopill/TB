@@ -1,5 +1,4 @@
 import scala.collection.mutable.ListBuffer
-import scala.util.Random
 
 
 
@@ -129,7 +128,6 @@ class BitString(string:String) {
     bits = if (!b) bitString.bits else bits
     this
   }
-
 
 }
 

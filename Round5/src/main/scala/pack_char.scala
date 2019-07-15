@@ -9,12 +9,6 @@ object pack_char {
     * @return a string value of the array a
     */
   def pack(a: Array[BitString],element_size:Int): BitString = {
-    /*
-    val padding_size = (a.length * a(0).bits.length) % 8
-    if (padding_size != 0) {
-      0 until padding_size foreach (_ => a.last.:+("0"))
-    }
-     */
     var b = new BitString("")
     0 until a.length foreach (x => b.::(a(x)))
     b

@@ -1,16 +1,6 @@
-
-import java.nio.ByteBuffer
-import java.security.{Key, Security}
-
 import params.kappa
-import javax.crypto.spec.SecretKeySpec
-import javax.crypto.{Cipher, SecretKeyFactory}
 import _root_.org.bouncycastle.crypto.digests.{CSHAKEDigest, SHAKEDigest}
-import org.bouncycastle.jce.provider.BouncyCastleProvider
 
-
-
-//TODO try to see how we can find if AES instruction is on
 
 object DRGB {
   var random_generator : SHAKEDigest = _
@@ -26,7 +16,6 @@ object DRGB {
       case false =>
         random_generator = new CSHAKEDigest(kapp_for_drng, "".getBytes(), custom_string)
         random_generator.update(seed, 0, seed.length)
-        //random_generator.update(custom_string.getBytes(),0,custom_string.length)
     }
   }
 

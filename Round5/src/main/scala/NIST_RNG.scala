@@ -21,7 +21,7 @@ object NIST_RNG {
     AES_CTR_DRGB_Update(seed)
   }
 
-  def randombytes(length : Int ) ={
+  def randombytes(length : Int ):Array[Byte] ={
     var random_bytes = Array.empty[Byte]
     var byte_to_get = length
     while(byte_to_get != 0 ) {
@@ -40,7 +40,7 @@ object NIST_RNG {
     random_bytes
   }
 
-  def AES256_ECB = {
+  def AES256_ECB: Array[Byte] = {
     aes_ecb = Cipher.getInstance("AES/ECB/NoPadding",BouncyCastleProvider.PROVIDER_NAME)
     aes_ecb.init(Cipher.ENCRYPT_MODE,new SecretKeySpec(keyBytes, "AES"))
     aes_ecb.doFinal(iv_bytes)
@@ -63,7 +63,7 @@ object NIST_RNG {
 
   def incIV : Unit ={
     var done = false
-    for (j <- 15 until 0 by -1 ; if !done) {
+    for (j <- 15 until 0 by -1; if !done) {
         if (iv_bytes(j) == -1)
           iv_bytes(j) = 0
         else{

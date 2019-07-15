@@ -1,4 +1,4 @@
-import params.{xe, kappa, f}
+import params.{xe, kappa, f, mu}
 
 object xef {
 
@@ -13,7 +13,7 @@ object xef {
       Array(13, 15, 16, 17, 19, 23), // XE3-103
       Array(16, 16, 17, 19, 21, 23)), // XE3-112),
     Array(Array(11, 13, 16, 17, 19, 21, 23, 29), // XE4-149
-      Array(13, 15, 16, 17, 19, 23, 29, 31), // XE4-163
+      Array(13, 15, 16, 17, 19, 23, 29, 31),  // XE4-163
       Array(16, 16, 17, 19, 21, 23, 25, 29)), // XE4-166),
     Array(Array(16, 11, 13, 16, 17, 19, 21, 23, 25, 29), // XE5-190
       Array(24, 13, 16, 17, 19, 21, 23, 25, 29, 31), // XE5-218
@@ -26,8 +26,12 @@ object xef {
       case 5 => (4, 0)
       case _ => (6, 6)
     }
-    case 192 => (4, 1)
+    case 192 => xe match {
+      case 163 => (3, 1)
+      case 218 => (4, 1)
+    }
     case 256 => (4, 2)
+
   }
 
   /*
@@ -79,13 +83,13 @@ object xef {
     }
   }
 
+  /*
   //TODO Voir pk sa marche pas
   def compute(m: BitString): BitString = {
 
     if (f <= 0 || f > 5) {
       m
     } else {
-
       val xe_left = m.bits.slice(0, kappa)
       val xe_right = m.bits.slice(m.bits.length - xe, m.bits.length)
       val registers = Array.fill[BitString](2 * f)(new BitString(""))
@@ -95,12 +99,12 @@ object xef {
 
       tuples.indices.foreach(i => i match {
         case 0 => f match {
-          case 5 => tuples(i)._1.::(getBlockXor(m, tuples(i)._2))
-          case _ => (0 until tuples(i)._2).foreach(j => tuples(i)._1.:+(getXor(m, j, tuples(i)._2)))
+          case 5 => tuples(i)._1.::(getBlockXor(big, tuples(i)._2))
+          case _ => (0 until tuples(i)._2).foreach(j => tuples(i)._1.:+(getXor(big, j, tuples(i)._2)))
         }
         case _ =>
           (0 until tuples(i)._2)
-            .foreach(j => tuples(i)._1.:+(getXor(m, j, tuples(i)._2)))
+            .foreach(j => tuples(i)._1.:+(getXor(big, j, tuples(i)._2)))
       })
 
       var zeros = new BitString("")
@@ -111,6 +115,7 @@ object xef {
       zeros
     }
   }
+   */
 
   def fixerr(m: BitString): BitString = {
 

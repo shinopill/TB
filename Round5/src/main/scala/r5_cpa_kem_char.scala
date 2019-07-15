@@ -11,12 +11,9 @@ object r5_cpa_kem_char {
   def encapsulate(pk:BitString) ={
     val m = NIST_RNG.randombytes(kappa/8)
     val rho = NIST_RNG.randombytes(kappa/8)
-    val  ct = r5_cpa_pke_char.encrypt(pk,m,rho)
-    val test = ct.toByteArray
+    val ct = r5_cpa_pke_char.encrypt(pk,m,rho)
     val q = BitString.byteArrayToBitString(m,8).::(ct).bitStringToString.toCharArray map (a => a.toByte)
     val k = hash(kappa/8,BitString.byteArrayToBitString(m,8).::(ct).bitStringToString,"")
-
-    val z = 0
     (ct,k)
   }
 

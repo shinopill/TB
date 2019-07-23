@@ -1,6 +1,8 @@
 import params.kappa
 import _root_.org.bouncycastle.crypto.digests.{CSHAKEDigest, SHAKEDigest}
 
+import scala.collection.mutable.ListBuffer
+
 
 object DRGB {
   var random_generator : SHAKEDigest = _
@@ -52,7 +54,8 @@ object DRGB {
     var x : Int = 0
 
     do{
-      x = BigInt(drgb(2).reverse).toChar
+      val array = drgb(2)
+      x = ((array(1).toInt << 8) & 0xFF00 ) + (array(0) & 0xFF)
     }while(x >= range * range_divisor)
 
     Integer.toUnsignedLong(x/range_divisor).toChar
@@ -66,27 +69,30 @@ object DRGB {
   def drgb_sample_16_2(range : Int): Char = {
     val nbr_bits = math.ceil(math.log(range)/math.log(2)).toInt
     var array = drgb(2)
-    var x = BigInt(array.reverse).toChar
-    /*
-    val bits = BitString.intToBitString(x)
-    (nbr_bits until 16).foreach(a => if(a < bits.bits.length) bits.bits =  bits.bits.updated(a,false) else bits.:+("0"))
-    //TODO effacer pour debug
-    val y = bits.toInt.toChar
-    bits.toInt.toChar
-     */
-    (x & getRange(nbr_bits)).toChar
+    (((( array(1).toInt << 8) & 0xFF00 ) + (array(0) & 0xFF)) & getRange(nbr_bits)).toChar
   }
 
   def drgb_sample_16_2_all_size(range:Int, nb_elem:Int): Array[Char] = {
     val nbr_bits = math.ceil(math.log(range)/math.log(2)).toInt
     var array = drgb(nb_elem*2)
-    val array_char = (0 until nb_elem) map(a => {
-      var x =  BigInt(array.slice(2 * a, 2 * a + 2).reverse).toChar
-      var y = x & getRange(nbr_bits)
-      y.toChar
-    })
-    array_char.toArray
+
+    def loop(xs : List[Byte], acc_array : List[Byte],  list : ListBuffer[Char]): Array[Char] ={
+      xs match {
+        case Nil => list.toList.toArray
+        case el :: els =>
+          acc_array match {
+            case Nil => loop(els,List[Byte](el), list)
+            case _ =>
+              list.append(( ((( el.toInt << 8) & 0xFF00 ) + (acc_array.head & 0xFF)) & getRange(nbr_bits)).toChar)
+              loop(els,List[Byte](), list)
+          }
+      }
+    }
+
+   loop(array.toList,List[Byte](),ListBuffer[Char]())
   }
+
+
 
   /**
     * Function to get an output_len_bytes hash from an input
@@ -104,7 +110,7 @@ object DRGB {
     array
   }
 
-  private def getRange(range : Int) = {
+  private def getRange(range : Int): Int  = {
     val s = range match{
       case 0  => 0x0000
       case 1  => 0x0001
@@ -126,27 +132,5 @@ object DRGB {
     }
     s
   }
-/*
-  /**
-    *
-    * https://stackoverflow.com/questions/36737643/determinisric-aes-ctr-in-java-bouncycastle
-    *
-    * OUTPUT MUST BE REVERSED ???
-    * @param
-    * @return
-    */
 
-  def AESCTR(len: Int ): String ={
-
-    Security.addProvider(new BouncyCastleProvider)
-
-    var random  = new Array[Byte](len)
-    val key = new SecretKeySpec(hash(kappa,"", "").mkString)
-    val aes = Cipher.getInstance("AES/CTR/NoPadding",BouncyCastleProvider.PROVIDER_NAME)
-    aes.init(Cipher.ENCRYPT_MODE,key)
-    aes.doFinal()
-    random.toString
-  }
-
-*/
 }

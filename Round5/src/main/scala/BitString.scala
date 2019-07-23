@@ -1,3 +1,4 @@
+import scala.annotation.tailrec
 import scala.collection.mutable.ListBuffer
 
 
@@ -19,49 +20,54 @@ class BitString(string:String) {
       case 0 => false
     }).toList
   }
-  /**
-    * Function that make xor between 2 bitString
-    * @param bitString the second bitString to xor with
-    * @return the BitString corresponding to the xor of the two bitString
-    */
-  def xor(bitString: BitString)  ={
-    val result = new BitString("")
-    if(bits.length == bitString.bits.length){
-      var result_bool = bits zip bitString.bits map (a => a._1 ^ a._2)
-      val s = booleanToString(result_bool)
-      s.foreach(x =>  result :+ x.toString )
-      result
-    }else{
-      result
-    }
-  }
 
   /**
     * Function to get the Integer value of the bitString
     * @return the signed value of the BitString
     */
-  def toInt: Int = {
-    java.lang.Long.parseLong(booleanToString(bits.reverse),2).toInt
+  def toChar(): Char = {
+    java.lang.Long.parseLong(booleanToString(bits.reverse),2).toChar
   }
 
   def toByteArray : Array[Byte]  = {
-    var list = (0 until math.floor(bits.length/8).toInt) map (x => Integer.parseInt(BitString.booleanToString(bits.slice(x*8,(x+1)*8).reverse),2).toByte)
-    if(bits.length%8 != 0) list = list :+ Integer.parseInt(BitString.booleanToString(bits.slice(bits.length - bits.length%8, bits.length).reverse),2).toByte
-    list.toArray
+    @tailrec
+    def loop(xs : List[Boolean], acc : ListBuffer[Boolean], result : ListBuffer[Byte]): Array[Byte] = {
+      xs match{
+        case Nil =>
+          if(acc.nonEmpty) result.append(Integer.parseInt(BitString.booleanToString(acc.toList),2).toByte)
+          result.toList.toArray
+        case el :: els => if(acc.length == 8){
+          result.append(Integer.parseInt(BitString.booleanToString(acc.toList),2).toByte)
+          loop(els,ListBuffer[Boolean](el),result)
+        }else{
+          acc.prepend(el)
+          loop(els,acc,result)
+        }
+      }
+    }
+    loop(bits,ListBuffer[Boolean](),ListBuffer[Byte]())
   }
   /**
     *
     * @return the string corresponding to the value of the BitString example 1000001 = A
    */
   def bitStringToString : String ={
-    var b = List[Boolean]()
+  @tailrec
+  def loop(xs : List[Boolean], acc: ListBuffer[Boolean], stringBuilder: StringBuilder): String = {
+      xs  match {
+        case Nil => if (acc.nonEmpty)  stringBuilder.append(Integer.parseInt(booleanToString(acc.toList),2).toChar)
+          stringBuilder.toString()
+        case el :: els  => if(acc.length == 8){
+          stringBuilder.append(Integer.parseInt(booleanToString(acc.toList),2).toChar)
+          loop(els,ListBuffer[Boolean](el),stringBuilder)
+        }else{
+          acc.prepend(el)
+          loop(els,acc,stringBuilder)
+        }
+      }
+    }
 
-    val  sb = StringBuilder.newBuilder
-    (0 until bits.length/8).foreach(i => {
-      sb.append(Integer.parseInt(booleanToString(bits.slice(i*8,(1+i)*8).reverse),2).toChar)
-    })
-    if(bits.length%8 != 0) sb.append(Integer.parseInt(booleanToString(bits.slice(bits.length - bits.length%8,bits.length).reverse),2).toChar)
-    sb.toString()
+    loop(bits,new ListBuffer[Boolean](),StringBuilder.newBuilder)
   }
 
   /**
@@ -74,7 +80,7 @@ class BitString(string:String) {
   }
 
   /**
-    * Concatenate the BitString in parameters to this bitString
+    * Concatenate the BitString in parameters to this bitString in a new BitString
     * @param bitString the BitString  to concatenate
     * @return the concatenation of both BitString
     */
@@ -82,7 +88,6 @@ class BitString(string:String) {
     bits =  bitString.bits.:::(bits)
     this
   }
-
   /**
     * Add a prepand a bit to the BitSting
     * @param bit the value of the Bit either 0 or 1
@@ -95,9 +100,9 @@ class BitString(string:String) {
   }
 
   /**
-  * Add a append a bit to the BitSting
-  * @param bit the value of the Bit either 0 or 1
-  */
+    * Add a append a bit to the BitSting
+    * @param bit the value of the Bit either 0 or 1
+    */
   def :+ (bit :String): Unit ={
     bit match {
       case "1" =>  bits = bits :+ true
@@ -111,13 +116,19 @@ class BitString(string:String) {
     * @return the string value of l
     */
   def booleanToString(l : List[Boolean]) : String = {
-    val sb = StringBuilder.newBuilder
-    l.indices foreach ( x => if(l(x)) {
-      sb.append("1")
-    }else{
-      sb.append("0")
-    })
-    sb.toString()
+    @tailrec
+    def loop(xs : List[Boolean], stringBuilder: StringBuilder) : String = {
+      xs match {
+        case Nil => stringBuilder.toString()
+        case el :: els =>
+          stringBuilder.append(el match {
+            case true => "1"
+            case _ => "0"
+          })
+          loop(els, stringBuilder)
+      }
+    }
+    loop(l,StringBuilder.newBuilder)
   }
 
   def == (bitString: BitString) : Boolean = {
@@ -140,24 +151,46 @@ object BitString{
     */
   def intToBitString(i : Int ) = {
     val b = new BitString("")
-    Integer.toBinaryString(i) foreach  (x => b.+:(x.toString))
+    val list = ListBuffer[Boolean]()
+    Integer.toBinaryString(i) foreach  (_ match {
+      case '1' => list.prepend(true)
+      case '0' => list.prepend(false)
+    })
+    b.bits = list.toList
     b
   }
 
   def booleanToString(l : List[Boolean]) : String = {
-    val sb = StringBuilder.newBuilder
-    l.indices foreach ( x => if(l(x)) {
-      sb.append("1")
-    }else{
-      sb.append("0")
-    })
-    sb.toString()
+    @tailrec
+    def loop(xs : List[Boolean], stringBuilder: StringBuilder) : String = {
+      xs match {
+        case Nil => stringBuilder.toString()
+        case el :: els =>
+          stringBuilder.append(el match {
+            case true => "1"
+            case _ => "0"
+          })
+          loop(els, stringBuilder)
+      }
+    }
+    loop(l,StringBuilder.newBuilder)
   }
 
   def byteArrayToBitString(a :Array[Byte], elem_size : Int ) : BitString = {
-    val b = new BitString("")
-    a.reverse foreach (i => Util.appendZeros(Integer.toBinaryString(i),elem_size) foreach (bit => b.+:(bit.toString)))
-    b
+    @tailrec
+    def loop(xs : List[Byte], acc : ListBuffer[Boolean]) : BitString = {
+      xs match {
+        case Nil =>
+          val b = new BitString("")
+          b.bits = acc.toList
+          b
+        case el :: els  =>
+          (0 until elem_size) foreach (i => acc.append((((el & 0xFF) >>> i) & 1) == 1))
+          loop(els,acc)
+      }
+    }
+
+    loop(a.toList,ListBuffer[Boolean]())
   }
 
 

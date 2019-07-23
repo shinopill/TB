@@ -1,12 +1,12 @@
 import javax.xml.bind.DatatypeConverter
-import org.scalatest.FlatSpec
+
 import scala.io.Source
 
-class KATTest extends FlatSpec{
-  def testKatKEM(request : String, inter : String, response : String): Unit ={
-    val source_int  = Source.fromURL(getClass.getResource(inter))
-    val source_req  = Source.fromURL(getClass.getResource(request))
-    val source_rsp  = Source.fromURL(getClass.getResource(response))
+object testFunction {
+  def testKatKEM(request : String, inter : String, response : String): Unit = {
+    val source_int = Source.fromURL(getClass.getResource(inter))
+    val source_req = Source.fromURL(getClass.getResource(request))
+    val source_rsp = Source.fromURL(getClass.getResource(response))
 
     val lines_int = (for (i <- source_int.getLines()) yield i).toArray
     val lines_req = (for (i <- source_req.getLines()) yield i).toArray
@@ -16,15 +16,15 @@ class KATTest extends FlatSpec{
     source_req.close()
     source_rsp.close()
 
-    (0 until 100) foreach(i => {
-      val count     = lines_req(0 + i * 7).split(" ")(2)
-      val name      = lines_rsp(0).split(" ")(1)
-      val tau       = lines_int(0 + i * 6).split("=")(1)
-      val seed_kat  = lines_req(1 + i*7).split(" ")(2)
-      val pk_kat    = lines_rsp(4 + i*7).split(" ")(2)
-      val sk_kat    = lines_rsp(5 + i*7).split(" ")(2)
-      val ct_kat    = lines_rsp(6 + i*7).split(" ")(2)
-      val ss_kat    = lines_rsp(7 + i*7).split(" ")(2)
+    (0 until 100) foreach (i => {
+      val count = lines_req(0 + i * 7).split(" ")(2)
+      val name = lines_rsp(0).split(" ")(1)
+      val tau = lines_int(0 + i * 6).split("=")(1)
+      val seed_kat = lines_req(1 + i * 7).split(" ")(2)
+      val pk_kat = lines_rsp(4 + i * 7).split(" ")(2)
+      val sk_kat = lines_rsp(5 + i * 7).split(" ")(2)
+      val ct_kat = lines_rsp(6 + i * 7).split(" ")(2)
+      val ss_kat = lines_rsp(7 + i * 7).split(" ")(2)
 
       params.tau = Integer.valueOf(tau)
       params.security_level = name
@@ -32,9 +32,9 @@ class KATTest extends FlatSpec{
       NIST_RNG.init(DatatypeConverter.parseHexBinary(seed_kat))
 
       val time = System.nanoTime()
-      val(pk,sk) = r5_cpa_kem.keygen()
-      val(ct,ss) = r5_cpa_kem.encapsulate(pk)
-      val ss_check = r5_cpa_kem.decapsulate(ct,sk)
+      val (pk, sk) = r5_cpa_kem.keygen()
+      val (ct, ss) = r5_cpa_kem.encapsulate(pk)
+      val ss_check = r5_cpa_kem.decapsulate(ct, sk)
       val end = System.nanoTime()
 
       assert(Util.toHexString(pk).equalsIgnoreCase(pk_kat))
@@ -44,11 +44,9 @@ class KATTest extends FlatSpec{
       assert(Util.toHexString(ss).equalsIgnoreCase(Util.toHexString(ss_check)))
 
     })
-
   }
 
-
-  def testFunction( request : String,  inter : String,   response : String) : Unit = {
+  def testKatPKE( request : String,  inter : String,   response : String) : Unit = {
     var source_int = Source.fromURL(getClass.getResource(inter))
     var source_req = Source.fromURL(getClass.getResource(request))
     var source_rsp = Source.fromURL(getClass.getResource(response))
@@ -105,5 +103,4 @@ class KATTest extends FlatSpec{
     })
 
   }
-
 }

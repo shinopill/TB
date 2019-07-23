@@ -29,6 +29,7 @@ object xef {
     case 192 => xe match {
       case 163 => (3, 1)
       case 218 => (4, 1)
+      case _ => (6,6)
     }
     case 256 => (4, 2)
 
@@ -83,39 +84,6 @@ object xef {
     }
   }
 
-  /*
-  //TODO Voir pk sa marche pas
-  def compute(m: BitString): BitString = {
-
-    if (f <= 0 || f > 5) {
-      m
-    } else {
-      val xe_left = m.bits.slice(0, kappa)
-      val xe_right = m.bits.slice(m.bits.length - xe, m.bits.length)
-      val registers = Array.fill[BitString](2 * f)(new BitString(""))
-
-      //Get tuple (BitString, length of reg)
-      val tuples = registers zip register_length(reg_to_choose._1)(reg_to_choose._2)
-
-      tuples.indices.foreach(i => i match {
-        case 0 => f match {
-          case 5 => tuples(i)._1.::(getBlockXor(big, tuples(i)._2))
-          case _ => (0 until tuples(i)._2).foreach(j => tuples(i)._1.:+(getXor(big, j, tuples(i)._2)))
-        }
-        case _ =>
-          (0 until tuples(i)._2)
-            .foreach(j => tuples(i)._1.:+(getXor(big, j, tuples(i)._2)))
-      })
-
-      var zeros = new BitString("")
-      (0 until kappa).foreach(_ => zeros.:+("0"))
-
-      tuples.foreach(tuple => zeros.::(tuple._1))
-      zeros = m.xor(zeros)
-      zeros
-    }
-  }
-   */
 
   def fixerr(m: BitString): BitString = {
 
@@ -137,29 +105,9 @@ object xef {
       })
       msg
     } else {
+      m.bits = m.bits.take(kappa)
       m
     }
   }
 
-  private def getXor(m: BitString, num_bit: Int, reg_len: Int): String = {
-    var b = m.bits(num_bit)
-    (1 until math.floor((kappa - 1 - num_bit)/ reg_len).toInt).foreach(a => b = m.bits(num_bit + ( a * reg_len))  ^ b )
-    b match {
-      case true => "1"
-      case false => "0"
-    }
-  }
-
-  private def getBlockXor(m: BitString, reg_len: Int): BitString = {
-    var b = new BitString("")
-    val nb_bits_xor = kappa / reg_len
-    (0 until reg_len).foreach(a => {
-      var bit = m.bits(a*nb_bits_xor)
-      (1 until nb_bits_xor) foreach (b =>
-        bit = bit ^ m.bits(a*nb_bits_xor + b)
-        )
-      b.bits = b.bits :+ bit
-    })
-    b
-  }
 }

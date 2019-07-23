@@ -3,7 +3,7 @@ import params.n
 class Polynome(val coef : Array[BitString],val isN : Boolean ,val mod : Int ) {
   def +(b : Polynome):Polynome = {
     //check if in the same ring
-    new Polynome((coef zip b.coef).map(a => BitString.intToBitString((a._1.toInt + a._2.toInt) % mod)),isN,mod)
+    new Polynome((coef zip b.coef).map(a => BitString.intToBitString((a._1.toChar + a._2.toChar) % mod)),isN,mod)
   }
 
 
@@ -22,7 +22,7 @@ class Polynome(val coef : Array[BitString],val isN : Boolean ,val mod : Int ) {
     for(i <- 0 until coef.length){
       for(j <- 0 until b.coef.length){
         var power = (i + j) % 1
-        var tmp = coef(i).toInt + b.coef(j).toInt
+        var tmp = coef(i).toChar + b.coef(j).toChar
         array(power) = BitString.intToBitString(tmp % mod)
       }
     }
@@ -31,8 +31,8 @@ class Polynome(val coef : Array[BitString],val isN : Boolean ,val mod : Int ) {
 
   private def lift_poly(a: Polynome):Polynome = {
     val array = Array.ofDim[BitString](a.coef.length)
-    array(0) = BitString.intToBitString(-1 * a.coef(0).toInt)
-    (1 until a.coef.length -1 ) foreach (i => array(i) = BitString.intToBitString((a.coef(i-1).toInt - a.coef(i).toInt)  % a.mod))
+    array(0) = BitString.intToBitString(-1 * a.coef(0).toChar)
+    (1 until a.coef.length -1 ) foreach (i => array(i) = BitString.intToBitString((a.coef(i-1).toChar - a.coef(i).toChar)  % a.mod))
     array(a.coef.length-1) = a.coef.last
     new Polynome(array,isN,mod)
   }
@@ -41,9 +41,9 @@ class Polynome(val coef : Array[BitString],val isN : Boolean ,val mod : Int ) {
 
   private def unlift_poly(a:Polynome):Polynome = {
     val array = Array.ofDim[BitString](a.coef.length)
-    array(0) = BitString.intToBitString(-1 * a.coef(0).toInt)
+    array(0) = BitString.intToBitString(-1 * a.coef(0).toChar)
     for(i <- 1 until a.coef.length){
-      array(i) = BitString.intToBitString(array(i-1).toInt - a.coef(i).toInt)
+      array(i) = BitString.intToBitString(array(i-1).toChar - a.coef(i).toChar)
     }
     new Polynome(array,isN,mod)
   }

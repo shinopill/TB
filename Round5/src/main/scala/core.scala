@@ -1,8 +1,33 @@
-import DRGB.{drgb_init, drgb_init_customization, drgb_sample_16_2, drgb_sampler16,drgb_sample_16_2_all_size}
-import params.{d, h, m_bar, mu, n, n_bar, q, tau, len_tau_2, p, t,f,xe,kappa}
+import DRGB.{drgb_init, drgb_init_customization, drgb_sample_16_2, drgb_sample_16_2_all_size, drgb_sampler16}
+import params.{d, f, h, kappa, len_tau_2, m_bar, mu, n, n_bar, p, q, t, tau, xe}
+import no.uib.cipr.matrix._
 
-object core_char {
+import scala.annotation.tailrec
+import scala.collection.mutable.ListBuffer
+object core {
 
+
+  def mult_matrix_n1(a: Array[Array[Polynomial]], b: Array[Array[Polynomial]], n: Int, mod: Int) = {
+    val a_lift = Array.ofDim[Double](a.length,a(0).length)
+    val b_lift = Array.ofDim[Double](b.length,b(0).length)
+    val c_lift = Array.ofDim[Double](a.length,b(0).length)
+
+    val result = Array.ofDim[Polynomial](a.length,b(0).length)
+
+    a.indices foreach(i => a(0).indices  foreach(j => a_lift(i)(j) = (((-1 * a(i)(j).coef(0)) & 0xFFFF) & mod-1).toDouble))
+    b.indices foreach(i => b(0).indices  foreach(j => b_lift(i)(j) = (((-1 * b(i)(j).coef(0)) & 0xFFFF) & mod-1).toDouble))
+
+    val t_test = new DenseMatrix(a_lift)
+    val q_test = new DenseMatrix(b_lift)
+    val c_test = new DenseMatrix(c_lift)
+    val d = t_test.mult(q_test,c_test)
+
+    result.indices foreach(i => result(0).indices foreach(j => result(i)(j) = new Polynomial(Array[Char](((math.round(d.get(i,j)) & 0xFFFF ) & mod-1).toChar), a(0)(0).isN, mod)))
+
+    result
+
+
+  }
   /**
     * Multiply 2 matrix of Polynome_char_char
     *
@@ -13,21 +38,25 @@ object core_char {
     * @return
     */
 
-  def mult_matrix(a: Array[Array[Polynomial_char]], b: Array[Array[Polynomial_char]], n: Int, mod: Int) = {
-    val C = Array.ofDim[Polynomial_char](a.length, b(0).length)
-    0 until a.length foreach (i => {
-      0 until b(0).length foreach (j => {
-        C(i)(j) = new Polynomial_char(Array.ofDim[Char](n), a(0)(0).isN, mod)
-        0 until a(0).length foreach (k => {
-          a(i)(k).mod = mod
-          b(k)(j).mod = mod
-          var tmp = a(i)(k).*(b(k)(j))
-          C(i)(j) = C(i)(j).+(tmp)
-          //  println(s"i : $i, j : $j, k :$k, poly " + C(i)(j).coef(0).toInt)
+  def mult_matrix(a: Array[Array[Polynomial]], b: Array[Array[Polynomial]], n: Int, mod: Int) = {
+    if(n == 1){
+      mult_matrix_n1(a,b,n,mod)
+    }else {
+      val C = Array.ofDim[Polynomial](a.length, b(0).length)
+      a.indices foreach (i => {
+        b(0).indices foreach (j => {
+          C(i)(j) = new Polynomial(Array.ofDim[Char](n), a(0)(0).isN, mod)
+          a(0).indices foreach (k => {
+            a(i)(k).mod = mod
+            b(k)(j).mod = mod
+            var tmp = a(i)(k).*(b(k)(j))
+            C(i)(j) = C(i)(j).+(tmp)
+          })
         })
       })
-    })
-    C
+      C
+    }
+
   }
 
   /**
@@ -37,7 +66,7 @@ object core_char {
     * @return A vector with mu coeffs
     */
 
-  def sample_mu(M: Array[Array[Polynomial_char]]): Array[Char] = {
+  def sample_mu(M: Array[Array[Polynomial]]): Array[Char] = {
     if (d == n) {
       (0 until mu) map (v => M(0)(0).coef(v)) toArray
     } else {
@@ -57,20 +86,27 @@ object core_char {
     * @param t_bits the wanted size of the mu elements
     * @return An array with MU elements
     */
-  def add_msg(M: Array[Array[Polynomial_char]], m: BitString, b_bits: Int, t_bits: Int) = {
+  def add_msg(M: Array[Array[Polynomial]], m: BitString, b_bits: Int, t_bits: Int) = {
     val v = Array.fill[BitString](mu)(new BitString(""))
     val nb_col = M(0).length
     val nb_row = M.length
     val poly_size = M(0)(0).coef.length
     //scale m from b to t bits
     v.indices.foreach(i => {
-      v(i).bits = v(i).bits ::: m.bits.slice(i * b_bits, (i + 1) * b_bits)
-      (0 until t_bits - b_bits).foreach(j => v(i).+:("0"))
+      val list = ListBuffer[Boolean]()
+      list.appendAll(m.bits.slice(i * b_bits, (i + 1) * b_bits))
+      (0 until t_bits - b_bits).foreach(_ => list.prepend(false))
+      v(i).bits = list.toList
     })
     (0 until mu) foreach (i => v(i) = {
-      val string = Util.appendZeros(Integer.toBinaryString((M(i / (nb_col * poly_size))((i / poly_size) % (nb_col)).coef(i % poly_size) + v(i).toInt.toChar).toChar % t), t_bits)
+      val string = Util.appendZeros(Integer.toBinaryString((M(i / (nb_col * poly_size))((i / poly_size) % (nb_col)).coef(i % poly_size) + v(i).toChar).toChar % t), t_bits)
       val bits = new BitString("")
-      string.foreach(char => bits.+:(char.toString))
+      val list = ListBuffer[Boolean]()
+      string.foreach(_ match {
+        case '1' => list.prepend(true)
+        case _ => list.prepend(false)
+      })
+      bits.bits = list.toList
       bits
     })
     v
@@ -98,23 +134,13 @@ object core_char {
     * @param mod the modulo for the substaction
     */
   def diff_msg(m1: Array[BitString], m2: Array[BitString], mod: Int): Array[BitString] = {
-    val x = m1 map (y => y.toInt.toChar)
-    val x2 = m2 map (y => y.toInt.toChar)
+    val x = m1 map (y => y.toChar)
+    val x2 = m2 map (y => y.toChar)
     var array = Array.ofDim[BitString](m1.length)
-    m1.indices.foreach(i => array(i) = BitString.intToBitString((m1(i).toInt - m2(i).toInt).toChar % mod))
+    m1.indices.foreach(i => array(i) = BitString.intToBitString((m1(i).toChar - m2(i).toChar).toChar % mod))
     array
   }
 
-  /**
-    * Transpose a matrix
-    *
-    * @param matrix the matrix to transpose
-    * @return the transposed matrix
-    */
-  def transpose_matrix(matrix: Array[Array[Short]]): Array[Array[Short]] = {
-    matrix.transpose
-    matrix
-  }
 
   /**
     * Round a coefficiant
@@ -139,7 +165,7 @@ object core_char {
     */
 
   def round_element(x: BitString, a_bits: Int, b_bits: Int, rounding_constant: Int): BitString = {
-    BitString.intToBitString(round_element(x.toInt.toChar, a_bits, b_bits, rounding_constant).toInt)
+    BitString.intToBitString(round_element(x.toChar, a_bits, b_bits, rounding_constant).toInt)
   }
 
 
@@ -151,7 +177,7 @@ object core_char {
     * @param b_bits length in bits at then coeff end
     * @return the matrix with rounded coeffs
     */
-  def round_matrix(matrix: Array[Array[Polynomial_char]], a_bits: Int, b_bits: Int, rounding_constant: Int): Array[Array[Polynomial_char]] = {
+  def round_matrix(matrix: Array[Array[Polynomial]], a_bits: Int, b_bits: Int, rounding_constant: Int): Array[Array[Polynomial]] = {
     matrix.foreach(rows => rows.foreach(poly => poly.coef.indices.foreach(i => poly.coef(i) = round_element(poly.coef(i), a_bits, b_bits, rounding_constant))))
     matrix
   }
@@ -188,7 +214,7 @@ object core_char {
     */
 
   def decompress(x: BitString, a_bits: Int, b_bits: Int): BitString = {
-    BitString.intToBitString((x.toInt * math.pow(2, a_bits - b_bits)).toInt)
+    BitString.intToBitString((x.toChar * math.pow(2, a_bits - b_bits)).toInt)
   }
 
   /**
@@ -199,7 +225,7 @@ object core_char {
     * @param b_bits length in bits at then coeffs end
     */
 
-  def decompress_matrix(matrix: Array[Array[Polynomial_char]], a_bits: Int, b_bits: Int): Array[Array[Polynomial_char]] = {
+  def decompress_matrix(matrix: Array[Array[Polynomial]], a_bits: Int, b_bits: Int): Array[Array[Polynomial]] = {
     matrix.foreach(rows => rows.foreach(poly => poly.coef.indices.foreach(i => poly.coef(i) = decompress(poly.coef(i), a_bits, b_bits))))
     matrix
   }
@@ -225,7 +251,6 @@ object core_char {
     p1
   }
 
-  //TODO mod q or mod len_tau_2
   /**
     * Function used for the permutation when tau = 2
     *
@@ -276,7 +301,7 @@ object core_char {
     * @param sigma
     * @return
     */
-  def create_A_master(sigma: Array[Byte]): Array[Array[Polynomial_char]] = {
+  def create_A_master(sigma: Array[Byte]): Array[Array[Polynomial]] = {
     create_A(sigma.slice(0,kappa/8))
   }
 
@@ -286,12 +311,11 @@ object core_char {
     * @param sigma the seed for the matrix
     * @return the matriy A
     */
-  def create_A(sigma: Array[Byte]): Array[Array[Polynomial_char]] = {
+  def create_A(sigma: Array[Byte]): Array[Array[Polynomial]] = {
     drgb_init(sigma.slice(0,kappa/8))
     val nb_poly = d / n
-    val matrix = Array.ofDim[Polynomial_char](nb_poly, nb_poly)
+    val matrix = Array.ofDim[Polynomial](nb_poly, nb_poly)
 
-    if (tau != 0 && n != 1) tau = 0
 
     tau match {
       case 0 =>
@@ -299,24 +323,40 @@ object core_char {
           case 1 =>
             drgb_init(sigma)
             (0 until d).foreach(a => (0 until nb_poly)
-              .foreach(b => matrix(a)(b) = new Polynomial_char(Array[Char](drgb_sample_16_2(q)), false, q)))
+              .foreach(b => matrix(a)(b) = new Polynomial(Array[Char](drgb_sample_16_2(q)), false, q)))
           case _ =>
             drgb_init(sigma)
             (0 until nb_poly).foreach(a => {
               (0 until nb_poly).foreach(b => {
-                matrix(a)(b) =  new Polynomial_char(drgb_sample_16_2_all_size(q,n), false, q)
+                matrix(a)(b) =  new Polynomial(drgb_sample_16_2_all_size(q,n), false, q)
               })
             })
         }
       case 1 =>
         val permut_vect = permutation_tau_1(sigma)
         (0 until d).foreach(i => (0 until d)
-          .foreach(j => matrix(i)(j) = new Polynomial_char(Array[Char]((j + permut_vect(i) % d).toChar), false, q)))
+          .foreach(j => matrix(i)(j) = new Polynomial(Array[Char]((j + permut_vect(i) % d).toChar), false, q)))
       case 2 =>
         val a_master =  DRGB.drgb_sample_16_2_all_size(q,len_tau_2)  //(for (i <- 0 until len_tau_2) yield drgb_sample_16_2(q)).toArray
         val p2 = permutation_tau_2(sigma)
+        /*
         (0 until d).foreach(i => (0 until d)
           .foreach(j => matrix(i)(j) = new Polynomial_char(Array[Char](a_master((j + p2(i)) % len_tau_2)), false, q)))
+          */
+        @tailrec
+        def loop(p2 : Array[Char], a_master : Array[Char],i: Int, j : Int , matrix : Array[Array[Polynomial]]):  Array[Array[Polynomial]] ={
+          matrix(i)(j) = new Polynomial(Array[Char](a_master((j + p2(i)) % len_tau_2)), false, q)
+          j match{
+            case _ if d-1 == j =>
+              i match {
+                case _ if d-1 == i => matrix
+                case _ =>  loop(p2,a_master,i+1,0, matrix)
+              }
+            case _ => loop(p2, a_master, i , j +1, matrix)
+          }
+        }
+
+        loop(p2,a_master,0,0,matrix)
     }
     matrix
   }
@@ -325,7 +365,7 @@ object core_char {
   /**
     * Create the secret matrix S_T
     */
-  def create_S_T(seed: Array[Byte]): Array[Array[Polynomial_char]] = {
+  def create_S_T(seed: Array[Byte]): Array[Array[Polynomial]] = {
     drgb_init(seed.slice(0,kappa/8))
     var matrix = Array.ofDim[Char](n_bar, d)
     0 until n_bar foreach (a => matrix(a) = create_secret_vector(d, h))
@@ -337,7 +377,7 @@ object core_char {
   /**
     * Create the secret matreix S_T
     */
-  def create_R_T(seed: Array[Byte]): Array[Array[Polynomial_char]] = {
+  def create_R_T(seed: Array[Byte]): Array[Array[Polynomial]] = {
     drgb_init(seed.slice(0,kappa/8))
 
     var matrix = Array.ofDim[Char](m_bar, d)
@@ -350,23 +390,28 @@ object core_char {
     val array = Array.ofDim[BitString](a.length)
     a.indices foreach (i => array(i) = {
       val b = new BitString("")
-      Util.appendZeros(Integer.toBinaryString(a(i)), element_size) foreach (c => b.+:(c.toString))
+      val listBuffer = ListBuffer[Boolean]()
+      Util.appendZeros(Integer.toBinaryString(a(i)), element_size) foreach (_ match {
+        case '1' => listBuffer.prepend(true)
+        case _ => listBuffer.prepend(false)
+      })
+      b.bits = listBuffer.toList
       b
     })
     array
   }
 
-  def charMatrixToPolyMatrix(a: Array[Array[Char]], mod: Int, isXi : Boolean): Array[Array[Polynomial_char]] = {
+  def charMatrixToPolyMatrix(a: Array[Array[Char]], mod: Int, isXi : Boolean): Array[Array[Polynomial]] = {
     val nb_row = a.length
     val nb_col = a(0).length
     val nbr_elem = nb_col * nb_row
     val nb_poly_per_row = d / n
-    val matrix = Array.ofDim[Polynomial_char](a.length, nb_col / n)
+    val matrix = Array.ofDim[Polynomial](a.length, nb_col / n)
     var coefs = Array.ofDim[Char](n)
     (0 until nbr_elem).foreach(i => {
       coefs(i % n) = a(i / nb_col)(i % nb_col)
       if (n == 1 || i % d == (d-1)) {
-        matrix(i/d)( (i/n) % (d/n)) = new Polynomial_char(coefs,isXi,mod)
+        matrix(i/d)( (i/n) % (d/n)) = new Polynomial(coefs,isXi,mod)
         coefs = Array.ofDim[Char](n)
       }
     })

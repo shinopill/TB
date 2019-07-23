@@ -3,7 +3,7 @@ import java.security.SecureRandom
 
 import core._
 import params._
-import pack._
+import r5_pack._
 import xef._
 
 object r5_cpa_pke {

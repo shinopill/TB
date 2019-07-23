@@ -1,8 +1,9 @@
-object   params {
+object  params {
     var tau = 0
+
     var security_level = ""
 
-    lazy val d = security_level match{
+    def d = security_level match{
         case "R5N1_1KEM_0d" => 594
         case "R5N1_3KEM_0d" => 881
         case "R5N1_5KEM_0d" => 1186
@@ -26,6 +27,7 @@ object   params {
         case "R5ND_1KEM_4longkey" => 490
         case _ => 0
     } //number of coeffs in a Polynomial
+
     lazy val n = security_level match{
         case "R5N1_1KEM_0d" => 1
         case "R5N1_3KEM_0d" => 1
@@ -50,6 +52,7 @@ object   params {
         case "R5ND_1KEM_4longkey" => 490
         case _ => 0
     } //ring based if > 1
+
     lazy val h = security_level match{
         case "R5N1_1KEM_0d" => 238
         case "R5N1_3KEM_0d" => 238

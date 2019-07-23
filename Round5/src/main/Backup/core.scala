@@ -75,7 +75,7 @@ object core {
     */
   def diff_msg(m1 :Array[BitString], m2 :Array[BitString], mod : Int): Array[BitString] ={
     var array = Array.ofDim[BitString](m1.length)
-    m1.indices.foreach(i => array(i) = BitString.intToBitString( (m1(i).toInt - m2(i).toInt) % mod))
+    m1.indices.foreach(i => array(i) = BitString.intToBitString( (m1(i).toChar - m2(i).toChar) % mod))
     array
   }
 
@@ -98,7 +98,7 @@ object core {
     */
 
   def round_element(x: BitString, a_bits: Int, b_bits: Int): BitString = {
-    BitString.intToBitString(math.floor((x.toInt + h) / math.pow(2, a_bits - b_bits)).toInt)
+    BitString.intToBitString(math.floor((x.toChar + h) / math.pow(2, a_bits - b_bits)).toInt)
   }
 
 
@@ -128,7 +128,7 @@ object core {
     */
 
   def decompress(x: BitString, a_bits: Int, b_bits: Int) : BitString = {
-    BitString.intToBitString((x.toInt * math.pow(2, a_bits - b_bits)).toInt)
+    BitString.intToBitString((x.toChar * math.pow(2, a_bits - b_bits)).toInt)
   }
 
   /**
@@ -196,7 +196,7 @@ object core {
       var x  = 0
       do {
         x = drgb_sampler16(d)
-      } while (secretVector(x).toInt != 0)
+      } while (secretVector(x).toChar != 0)
 
       if (i % 2 == 0) secretVector(x) = BitString.intToBitString(1) else secretVector(x) = BitString.intToBitString(-1)
     }

@@ -3,9 +3,6 @@ import javax.xml.bind.DatatypeConverter
 import System._
 object main extends App {
 
-  args(0) match {
-    case "R5N?_????_?"
-  }
 
   params.tau = 2
   params.security_level = "R5N1_1KEM_0d"

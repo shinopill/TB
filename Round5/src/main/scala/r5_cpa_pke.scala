@@ -1,3 +1,6 @@
+/**
+  * @author Florent Piller
+  */
 
 import core._
 import params._
@@ -6,7 +9,7 @@ import xef._
 
 
 object r5_cpa_pke {
-  def keygen() = {
+  def keygen(): (BitString, Array[Byte]) = {
     val sigma = NIST_RNG.randombytes(kappa/8)
     val A = create_A(sigma)
     val sk = NIST_RNG.randombytes(kappa/8)
@@ -18,7 +21,7 @@ object r5_cpa_pke {
   }
 
 
-  def encrypt(pk: BitString, m: Array[Byte], rho: Array[Byte]) = {
+  def encrypt(pk: BitString, m: Array[Byte], rho: Array[Byte]) : BitString = {
     val (sigma,b) = unpack_pk(pk, kappa / 8, d * n_bar , p_bits)
     val A = create_A(sigma.toByteArray)
     val R = create_R_T(rho).transpose
@@ -35,16 +38,15 @@ object r5_cpa_pke {
     ct
   }
 
-  def decrypt(sk: Array[Byte], ct: BitString) = {
+  def decrypt(sk: Array[Byte], ct: BitString): String = {
     val S_T = create_S_T(sk)
-    var (u_t,v) = unpack_ct(ct, d * m_bar, p_bits, mu, t_bits)
+    val (u_t,v) = unpack_ct(ct, d * m_bar, p_bits, mu, t_bits)
     val v_dec = decompress_vector(v, p_bits, t_bits)
-    val v_int = v_dec map (x => x.toChar)
     val X_prime = mult_matrix(S_T, u_t.transpose, n, p)
     val m2 = diff_msg(v_dec, charArrayToBitStringArray(sample_mu(X_prime),p_bits), p)
     val m3 = round_matrix(Array[Array[BitString]](m2), p_bits, b_bits,h_3)
-    var m1 = pack(m3(0),b_bits)
-    var m4 = computeC(m1)
+    val m1 = pack(m3(0),b_bits)
+    val m4 = computeC(m1)
     val m = fixerr(m4)
     m.bitStringToString
   }

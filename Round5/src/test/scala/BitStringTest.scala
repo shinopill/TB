@@ -1,11 +1,16 @@
 import org.scalatest.FlatSpec
 
 class BitStringTest extends FlatSpec{
-  /*
-  "A BitString " should "give take a string and get a correct bitmap" in {
-    assert(new BitString("B").toString == Integer.toBinaryString(66).reverse)
+
+
+  "A BitString " should "take a string and get a correct bitmap" in {
+    assert(new BitString("B").toString == Integer.toBinaryString(66).reverse.patch(7,"0",0))
   }
 
+  "A BitString " should "take a string and get the correct String back" in {
+    assert(new BitString("B").bitStringToString == "B")
+    assert(new BitString("ABCDEFGHT").bitStringToString == "ABCDEFGHT")
+  }
   "A BitString" should "be able to get back to the right integer" in {
     assert(new BitString("A").toChar == 65)
   }
@@ -21,9 +26,9 @@ class BitStringTest extends FlatSpec{
 
   "The concatenation of 2 BitString" should "Be correct" in {
     assert(new BitString("A").::(new BitString("A")).toString == new BitString("AA").toString)
-
+    assert(new BitString("A").::(new BitString("B")).toString == new BitString("AB").toString)
   }
 
-*/
+
 
 }

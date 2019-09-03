@@ -1,4 +1,6 @@
-
+/**
+  * @author Florent Piller
+  */
 import params.{d, kappa, m_bar, mu, n, p_bits, t_bits}
 
 object r5_cca_pke {
@@ -8,13 +10,14 @@ object r5_cca_pke {
     (pk,sk)
   }
 
-  def  encrypt(m : Array[Byte], pk : BitString):(BitString,Int) = {
+  def encrypt(m : Array[Byte], pk : BitString):(BitString,Int) = {
     val (c1, k) = r5_cca_kem.encapsulate(pk)
     val c2 = r5_dem.dem(k, kappa/8, m)
     val ct = c1.::(BitString.byteArrayToBitString(c2,8))
     val clen = c2.length + math.ceil(kappa/8 + ( m_bar * d/n.toDouble * n * p_bits  + mu * t_bits)/8).toInt
     (ct,clen)
   }
+
     def decrypt(ct : BitString, clen: Int , sk : BitString):Array[Byte] = {
       val c2_len = clen - math.ceil(kappa/8 + ( m_bar * d/n.toDouble * n * p_bits  + mu * t_bits)/8)
       val c1 = new BitString("")

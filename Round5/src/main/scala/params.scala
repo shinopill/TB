@@ -1,3 +1,7 @@
+/**
+  * @author Florent Piller
+  */
+
 object  params {
     var tau = 0
 
@@ -25,7 +29,7 @@ object  params {
         case "R5N1_3PKE_0smallCT" => 757
         case "R5ND_0KEM_2iot" => 372
         case "R5ND_1KEM_4longkey" => 490
-        case _ => 0
+        case _ => throw new Exception("Wrong security level or security level not initialized")
     } //number of coeffs in a Polynomial
 
     lazy val n = security_level match{
@@ -50,7 +54,7 @@ object  params {
         case "R5N1_3PKE_0smallCT" => 1
         case "R5ND_0KEM_2iot" => 372
         case "R5ND_1KEM_4longkey" => 490
-        case _ => 0
+        case _ => throw new Exception("Wrong security level or security level not initialized")
     } //ring based if > 1
 
     lazy val h = security_level match{
@@ -75,7 +79,7 @@ object  params {
         case "R5N1_3PKE_0smallCT" => 378
         case "R5ND_0KEM_2iot" => 178
         case "R5ND_1KEM_4longkey" => 162
-        case _ => 0
+        case _ => throw new Exception("Wrong security level or security level not initialized")
     } //Number of non-zero values per column in secret matrix
 
     lazy val q_bits = security_level match{
@@ -100,7 +104,7 @@ object  params {
         case "R5N1_3PKE_0smallCT" => 14
         case "R5ND_0KEM_2iot" => 11
         case "R5ND_1KEM_4longkey" => 10
-        case _ => 0
+        case _ => throw new Exception("Wrong security level or security level not initialized")
     }
     lazy val q = math.pow(2,q_bits).toInt
 
@@ -126,7 +130,7 @@ object  params {
         case "R5N1_3PKE_0smallCT" => 9
         case "R5ND_0KEM_2iot" => 7
         case "R5ND_1KEM_4longkey" => 7
-        case _ => 0
+        case _ => throw new Exception("Wrong security level or security level not initialized")
     }
     lazy val p = math.pow(2,p_bits).toInt
 
@@ -152,7 +156,7 @@ object  params {
         case "R5N1_3PKE_0smallCT" => 4
         case "R5ND_0KEM_2iot" => 3
         case "R5ND_1KEM_4longkey" => 3
-        case _ => 0
+        case _ => throw new Exception("Wrong security level or security level not initialized")
     }
     lazy val t = math.pow(2,t_bits).toInt
 
@@ -178,7 +182,7 @@ object  params {
         case "R5N1_3PKE_0smallCT" => 1
         case "R5ND_0KEM_2iot" => 1
         case "R5ND_1KEM_4longkey" => 1
-        case _ => 0
+        case _ => throw new Exception("Wrong security level or security level not initialized")
     }
     lazy val b = math.pow(2,b_bits).toInt
     lazy val n_bar = security_level match{
@@ -203,7 +207,7 @@ object  params {
         case "R5N1_3PKE_0smallCT" => 192
         case "R5ND_0KEM_2iot" => 1
         case "R5ND_1KEM_4longkey" => 1
-        case _ => 0
+        case _ => throw new Exception("Wrong security level or security level not initialized")
     }
     lazy val m_bar = security_level match{
         case "R5N1_1KEM_0d" => 7
@@ -227,7 +231,7 @@ object  params {
         case "R5N1_3PKE_0smallCT" => 1
         case "R5ND_0KEM_2iot" => 1
         case "R5ND_1KEM_4longkey" => 1
-        case _ => 0
+        case _ => throw new Exception("Wrong security level or security level not initialized")
     }
 
 
@@ -253,7 +257,7 @@ object  params {
         case "R5N1_3PKE_0smallCT" => 0
         case "R5ND_0KEM_2iot" => 2
         case "R5ND_1KEM_4longkey" => 4
-        case _ => 0
+        case _ => throw new Exception("Wrong security level or security level not initialized")
     }
 
 
@@ -279,7 +283,7 @@ object  params {
         case "R5N1_3PKE_0smallCT" => 0
         case "R5ND_0KEM_2iot" => 53
         case "R5ND_1KEM_4longkey" => 163
-        case _ => 0
+        case _ => throw new Exception("Wrong security level or security level not initialized")
     }
     lazy val kappa = security_level match{
         case "R5N1_1KEM_0d" => 128
@@ -303,7 +307,7 @@ object  params {
         case "R5N1_3PKE_0smallCT" => 192
         case "R5ND_0KEM_2iot" => 128
         case "R5ND_1KEM_4longkey" => 192
-        case _ => 0
+        case _ => throw new Exception("Wrong security level or security level not initialized")
     }
 
     lazy val mu = security_level match{
@@ -328,7 +332,7 @@ object  params {
         case "R5N1_3PKE_0smallCT" => 192
         case "R5ND_0KEM_2iot" => 181
         case "R5ND_1KEM_4longkey" => 355
-        case _ => 0
+        case _ => throw new Exception("Wrong security level or security level not initialized")
     }
 
 

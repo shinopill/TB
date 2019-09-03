@@ -1,4 +1,6 @@
-
+/**
+  * @author Florent Piller
+  */
 import params.{f, m_bar, n, n_bar, p, p_bits, q, xe}
 
 import scala.annotation.tailrec

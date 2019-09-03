@@ -31,11 +31,9 @@ object testFunction {
 
       NIST_RNG.init(DatatypeConverter.parseHexBinary(seed_kat))
 
-      val time = System.nanoTime()
       val (pk, sk) = r5_cpa_kem.keygen()
       val (ct, ss) = r5_cpa_kem.encapsulate(pk)
       val ss_check = r5_cpa_kem.decapsulate(ct, sk)
-      val end = System.nanoTime()
 
       assert(Util.toHexString(pk).equalsIgnoreCase(pk_kat))
       assert(Util.toHexString(sk).equalsIgnoreCase(sk_kat))
@@ -47,13 +45,13 @@ object testFunction {
   }
 
   def testKatPKE( request : String,  inter : String,   response : String) : Unit = {
-    var source_int = Source.fromURL(getClass.getResource(inter))
-    var source_req = Source.fromURL(getClass.getResource(request))
-    var source_rsp = Source.fromURL(getClass.getResource(response))
+    val source_int = Source.fromURL(getClass.getResource(inter))
+    val source_req = Source.fromURL(getClass.getResource(request))
+    val source_rsp = Source.fromURL(getClass.getResource(response))
 
-    var lines_int = (for (i <- source_int.getLines()) yield i).toArray
-    var lines_req = (for (i <- source_req.getLines()) yield i).toArray
-    var lines_rsp = (for (i <- source_rsp.getLines()) yield i).toArray
+    val lines_int = (for (i <- source_int.getLines()) yield i).toArray
+    val lines_req = (for (i <- source_req.getLines()) yield i).toArray
+    val lines_rsp = (for (i <- source_rsp.getLines()) yield i).toArray
 
     source_int.close()
     source_req.close()
@@ -75,24 +73,12 @@ object testFunction {
       params.security_level = name
       NIST_RNG.init(DatatypeConverter.parseHexBinary(seed_kat))
 
-      // println(count)
-      val time = System.nanoTime()
       val (pk, sk) = r5_cca_pke.keygen
-      // println(Util.toHexString(pk))
-
-      val int = System.nanoTime()
-      //println(int - time)
 
       val (c, clen) = r5_cca_pke.encrypt(DatatypeConverter.parseHexBinary(msg_kat), pk)
 
-      // println(Util.toHexString(c))
-      //println(c_kat)
-      val int2 = System.nanoTime()
-      //println(int2 - int)
       val msg_check = r5_cca_pke.decrypt(c, clen, sk)
-      val end = System.nanoTime()
-      // println(end - int2)
-      //println(end-time)
+
 
       assert(DatatypeConverter.parseHexBinary(pk_kat) zip pk.toByteArray forall (a => a._1 == a._2)) //Much faster for
       assert(DatatypeConverter.parseHexBinary(sk_kat) zip sk.toByteArray forall (a => a._1 == a._2))

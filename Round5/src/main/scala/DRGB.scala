@@ -1,3 +1,7 @@
+/**
+  * @author Florent Piller
+  */
+
 import params.kappa
 import _root_.org.bouncycastle.crypto.digests.{CSHAKEDigest, SHAKEDigest}
 
@@ -12,7 +16,7 @@ object DRGB {
     * @param seed the mandatory seed
     * @param custom_string the custom string (optional)
     */
-  def drgb_init_customization(seed: Array[Byte], custom_string : Array[Byte]) = {
+  def drgb_init_customization(seed: Array[Byte], custom_string : Array[Byte]) :Unit = {
     custom_string.isEmpty match {
       case true => drgb_init(seed)
       case false =>
@@ -25,7 +29,7 @@ object DRGB {
     * Initialze the DRBG with a seed
     * @param seed the wanted seed
     */
-  def drgb_init(seed: Array[Byte]) = {
+  def drgb_init(seed: Array[Byte]):Unit  = {
     random_generator = new SHAKEDigest(kapp_for_drng)
     random_generator.update(seed, 0, seed.length)
   }

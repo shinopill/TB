@@ -1,4 +1,6 @@
-import java.security.Key
+/**
+  * @author Florent Piller
+  */
 
 import javax.crypto.spec.{GCMParameterSpec, IvParameterSpec, SecretKeySpec}
 import javax.crypto.{Cipher, SecretKey}
@@ -9,6 +11,7 @@ object r5_dem {
 
   private val ALGO = "AES/GCM/NoPadding"
   private val Bouncy = BouncyCastleProvider.PROVIDER_NAME
+
 
   def dem(key: Array[Byte],key_len : Int , toEncrypt : Array[Byte]) ={
     val cipher  = Cipher.getInstance(ALGO,Bouncy)

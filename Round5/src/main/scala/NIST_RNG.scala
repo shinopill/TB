@@ -1,10 +1,11 @@
-import java.security.Security
-import java.util
+/**
+  * @author Florent Piller
+  */
 
-import scala.util.control.Breaks.break
+import java.security.Security
+
 import javax.crypto.Cipher
 import javax.crypto.spec.{IvParameterSpec, SecretKeySpec}
-import org.bouncycastle.jcajce.provider.symmetric.AES
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 
 
@@ -15,7 +16,7 @@ object NIST_RNG {
   var iv_bytes : Array[Byte] = _
   var keyBytes : Array[Byte] = _
 
-  def init(seed : Array[Byte]) = {
+  def init(seed : Array[Byte]) : Unit = {
     keyBytes = Array.fill[Byte](32)(0)
     iv_bytes = Array.fill[Byte](16)(0)
     AES_CTR_DRGB_Update(seed)
@@ -46,7 +47,7 @@ object NIST_RNG {
     aes_ecb.doFinal(iv_bytes)
   }
 
-  def AES_CTR_DRGB_Update(seed : Array[Byte]) = {
+  def AES_CTR_DRGB_Update(seed : Array[Byte]) :Unit = {
     var temp = Array.ofDim[Byte](0)
     (0 until 3) foreach(i => {
       incIV

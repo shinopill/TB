@@ -1,0 +1,301 @@
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\BitStringTest.scala:1:12: object scalatest is not a member of package org[0m
+[0m[[0m[31merror[0m] [0m[0mimport org.scalatest.FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0m           ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\BitStringTest.scala:3:29: not found: type FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0mclass BitStringTest extends FlatSpec{[0m
+[0m[[0m[31merror[0m] [0m[0m                            ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\BitStringTest.scala:6:18: value should is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m  "A BitString " should "take a string and get a correct bitmap" in {[0m
+[0m[[0m[31merror[0m] [0m[0m                 ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\BitStringTest.scala:7:16: not found: type BitString[0m
+[0m[[0m[31merror[0m] [0m[0m    assert(new BitString("B").toString == Integer.toBinaryString(66).reverse.patch(7,"0",0))[0m
+[0m[[0m[31merror[0m] [0m[0m               ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\BitStringTest.scala:10:18: value should is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m  "A BitString " should "take a string and get the correct String back" in {[0m
+[0m[[0m[31merror[0m] [0m[0m                 ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\BitStringTest.scala:11:16: not found: type BitString[0m
+[0m[[0m[31merror[0m] [0m[0m    assert(new BitString("B").bitStringToString == "B")[0m
+[0m[[0m[31merror[0m] [0m[0m               ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\BitStringTest.scala:12:16: not found: type BitString[0m
+[0m[[0m[31merror[0m] [0m[0m    assert(new BitString("ABCDEFGHT").bitStringToString == "ABCDEFGHT")[0m
+[0m[[0m[31merror[0m] [0m[0m               ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\BitStringTest.scala:14:17: value should is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m  "A BitString" should "be able to get back to the right integer" in {[0m
+[0m[[0m[31merror[0m] [0m[0m                ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\BitStringTest.scala:15:16: not found: type BitString[0m
+[0m[[0m[31merror[0m] [0m[0m    assert(new BitString("A").toChar == 65)[0m
+[0m[[0m[31merror[0m] [0m[0m               ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\BitStringTest.scala:18:12: value should is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m  "An Int" should "be converted in the correct bitString" in {[0m
+[0m[[0m[31merror[0m] [0m[0m           ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\BitStringTest.scala:19:12: not found: value BitString[0m
+[0m[[0m[31merror[0m] [0m[0m    assert(BitString.intToBitString(3).toString == Integer.toBinaryString(3).reverse)[0m
+[0m[[0m[31merror[0m] [0m[0m           ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\BitStringTest.scala:20:12: not found: value BitString[0m
+[0m[[0m[31merror[0m] [0m[0m    assert(BitString.intToBitString(1112234).toString == Integer.toBinaryString(1112234).reverse)[0m
+[0m[[0m[31merror[0m] [0m[0m           ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\BitStringTest.scala:23:21: value should is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m  "A negative int " should "be in the correct bitString" in {[0m
+[0m[[0m[31merror[0m] [0m[0m                    ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\BitStringTest.scala:24:12: not found: value BitString[0m
+[0m[[0m[31merror[0m] [0m[0m    assert(BitString.intToBitString(-1).toString == Integer.toBinaryString(-1).reverse)[0m
+[0m[[0m[31merror[0m] [0m[0m           ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\BitStringTest.scala:27:38: value should is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m  "The concatenation of 2 BitString" should "Be correct" in {[0m
+[0m[[0m[31merror[0m] [0m[0m                                     ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\BitStringTest.scala:28:16: not found: type BitString[0m
+[0m[[0m[31merror[0m] [0m[0m    assert(new BitString("A").::(new BitString("A")).toString == new BitString("AA").toString)[0m
+[0m[[0m[31merror[0m] [0m[0m               ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\BitStringTest.scala:28:38: not found: type BitString[0m
+[0m[[0m[31merror[0m] [0m[0m    assert(new BitString("A").::(new BitString("A")).toString == new BitString("AA").toString)[0m
+[0m[[0m[31merror[0m] [0m[0m                                     ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\BitStringTest.scala:28:70: not found: type BitString[0m
+[0m[[0m[31merror[0m] [0m[0m    assert(new BitString("A").::(new BitString("A")).toString == new BitString("AA").toString)[0m
+[0m[[0m[31merror[0m] [0m[0m                                                                     ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\BitStringTest.scala:29:16: not found: type BitString[0m
+[0m[[0m[31merror[0m] [0m[0m    assert(new BitString("A").::(new BitString("B")).toString == new BitString("AB").toString)[0m
+[0m[[0m[31merror[0m] [0m[0m               ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\BitStringTest.scala:29:38: not found: type BitString[0m
+[0m[[0m[31merror[0m] [0m[0m    assert(new BitString("A").::(new BitString("B")).toString == new BitString("AB").toString)[0m
+[0m[[0m[31merror[0m] [0m[0m                                     ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\BitStringTest.scala:29:70: not found: type BitString[0m
+[0m[[0m[31merror[0m] [0m[0m    assert(new BitString("A").::(new BitString("B")).toString == new BitString("AB").toString)[0m
+[0m[[0m[31merror[0m] [0m[0m                                                                     ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\DrgbTest.scala:1:12: object scalatest is not a member of package org[0m
+[0m[[0m[31merror[0m] [0m[0mimport org.scalatest.{BeforeAndAfter, FlatSpec}[0m
+[0m[[0m[31merror[0m] [0m[0m           ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\DrgbTest.scala:2:8: not found: object DRGB[0m
+[0m[[0m[31merror[0m] [0m[0mimport DRGB.{drgb, drgb_init, drgb_init_customization, drgb_sample_16_2, drgb_sample_16_2_all_size}[0m
+[0m[[0m[31merror[0m] [0m[0m       ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\DrgbTest.scala:4:24: not found: type FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0mclass DrgbTest extends FlatSpec with BeforeAndAfter{[0m
+[0m[[0m[31merror[0m] [0m[0m                       ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\DrgbTest.scala:4:38: not found: type BeforeAndAfter[0m
+[0m[[0m[31merror[0m] [0m[0mclass DrgbTest extends FlatSpec with BeforeAndAfter{[0m
+[0m[[0m[31merror[0m] [0m[0m                                     ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\DrgbTest.scala:5:3: not found: value before[0m
+[0m[[0m[31merror[0m] [0m[0m  before{[0m
+[0m[[0m[31merror[0m] [0m[0m  ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\DrgbTest.scala:6:5: not found: value params[0m
+[0m[[0m[31merror[0m] [0m[0m    params.security_level = "R5N1_1KEM_0d"[0m
+[0m[[0m[31merror[0m] [0m[0m    ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\DrgbTest.scala:9:17: value should is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m  "A true DPRG" should "give the same output between 2 initializations" in {[0m
+[0m[[0m[31merror[0m] [0m[0m                ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\DrgbTest.scala:10:5: not found: value drgb_init_customization[0m
+[0m[[0m[31merror[0m] [0m[0m    drgb_init_customization(0.toByte :: Nil toArray,0.toByte :: Nil toArray)[0m
+[0m[[0m[31merror[0m] [0m[0m    ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\DrgbTest.scala:11:13: not found: value drgb[0m
+[0m[[0m[31merror[0m] [0m[0m    val x = drgb(2)[0m
+[0m[[0m[31merror[0m] [0m[0m            ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\DrgbTest.scala:12:5: not found: value drgb_init_customization[0m
+[0m[[0m[31merror[0m] [0m[0m    drgb_init_customization(0.toByte :: Nil toArray,0.toByte :: Nil toArray)[0m
+[0m[[0m[31merror[0m] [0m[0m    ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\DrgbTest.scala:13:13: not found: value drgb[0m
+[0m[[0m[31merror[0m] [0m[0m    val y = drgb(2)[0m
+[0m[[0m[31merror[0m] [0m[0m            ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\DrgbTest.scala:20:17: value should is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m  "A true DRGB" should "not give the same output with different seed" in {[0m
+[0m[[0m[31merror[0m] [0m[0m                ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\DrgbTest.scala:21:5: not found: value drgb_init[0m
+[0m[[0m[31merror[0m] [0m[0m    drgb_init("seed".toCharArray map (c => c.toByte))[0m
+[0m[[0m[31merror[0m] [0m[0m    ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\DrgbTest.scala:22:13: not found: value drgb[0m
+[0m[[0m[31merror[0m] [0m[0m    val x = drgb(2)[0m
+[0m[[0m[31merror[0m] [0m[0m            ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\DrgbTest.scala:23:5: not found: value drgb_init[0m
+[0m[[0m[31merror[0m] [0m[0m    drgb_init("init2".toCharArray map (c => c.toByte))[0m
+[0m[[0m[31merror[0m] [0m[0m    ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\DrgbTest.scala:24:13: not found: value drgb[0m
+[0m[[0m[31merror[0m] [0m[0m    val y = drgb(2)[0m
+[0m[[0m[31merror[0m] [0m[0m            ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\DrgbTest.scala:31:32: value should is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m  " drgb_sample_16_2_all_size" should "give the same random as drgb_sample_16_2 with the exact same size and initilization" in {[0m
+[0m[[0m[31merror[0m] [0m[0m                               ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\DrgbTest.scala:32:5: not found: value drgb_init[0m
+[0m[[0m[31merror[0m] [0m[0m    drgb_init("seed".toCharArray map (c => c.toByte))[0m
+[0m[[0m[31merror[0m] [0m[0m    ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\DrgbTest.scala:33:13: not found: value drgb_sample_16_2_all_size[0m
+[0m[[0m[31merror[0m] [0m[0m    val x = drgb_sample_16_2_all_size(16,8)[0m
+[0m[[0m[31merror[0m] [0m[0m            ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\DrgbTest.scala:34:5: not found: value drgb_init[0m
+[0m[[0m[31merror[0m] [0m[0m    drgb_init("seed".toCharArray map (c => c.toByte))[0m
+[0m[[0m[31merror[0m] [0m[0m    ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\DrgbTest.scala:36:31: not found: value drgb_sample_16_2[0m
+[0m[[0m[31merror[0m] [0m[0m    0 until 8 foreach (y(_) = drgb_sample_16_2(16))[0m
+[0m[[0m[31merror[0m] [0m[0m                              ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5N1_1KEM_0d.scala:1:12: object scalatest is not a member of package org[0m
+[0m[[0m[31merror[0m] [0m[0mimport org.scalatest.FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0m           ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5N1_1KEM_0d.scala:3:36: not found: type FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0mclass KATTest_R5N1_1KEM_0d extends FlatSpec {[0m
+[0m[[0m[31merror[0m] [0m[0m                                   ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5N1_1KEM_0d.scala:4:18: value should is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m  "R5N1_1KEM_0d" should "give the same result as the KAT" in{[0m
+[0m[[0m[31merror[0m] [0m[0m                 ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5N1_1PKE_0d.scala:1:12: object scalatest is not a member of package org[0m
+[0m[[0m[31merror[0m] [0m[0mimport org.scalatest.FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0m           ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5N1_1PKE_0d.scala:3:36: not found: type FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0mclass KATTest_R5N1_1PKE_0d extends FlatSpec {[0m
+[0m[[0m[31merror[0m] [0m[0m                                   ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5N1_1PKE_0d.scala:4:18: value should is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m  "R5N1_1PKE_0d" should "give the same result as the KAT "in {[0m
+[0m[[0m[31merror[0m] [0m[0m                 ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5N1_3KEM_0d.scala:1:12: object scalatest is not a member of package org[0m
+[0m[[0m[31merror[0m] [0m[0mimport org.scalatest.FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0m           ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5N1_3KEM_0d.scala:3:36: not found: type FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0mclass KATTest_R5N1_3KEM_0d extends FlatSpec {[0m
+[0m[[0m[31merror[0m] [0m[0m                                   ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5N1_3KEM_0d.scala:4:18: value should is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m  "R5N1_3KEM_0d" should "give the same result as the KAT" in  {[0m
+[0m[[0m[31merror[0m] [0m[0m                 ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5N1_3PKE_0d.scala:1:12: object scalatest is not a member of package org[0m
+[0m[[0m[31merror[0m] [0m[0mimport org.scalatest.FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0m           ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5N1_3PKE_0d.scala:3:36: not found: type FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0mclass KATTest_R5N1_3PKE_0d extends FlatSpec {[0m
+[0m[[0m[31merror[0m] [0m[0m                                   ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5N1_3PKE_0d.scala:4:18: value should is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m  "R5N1_3PKE_0d" should "give the same result as the KAT "in {[0m
+[0m[[0m[31merror[0m] [0m[0m                 ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5N1_3PKE_0smallCT.scala:1:12: object scalatest is not a member of package org[0m
+[0m[[0m[31merror[0m] [0m[0mimport org.scalatest.FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0m           ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5N1_3PKE_0smallCT.scala:3:42: not found: type FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0mclass KATTest_R5N1_3PKE_0smallCT extends FlatSpec {[0m
+[0m[[0m[31merror[0m] [0m[0m                                         ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5N1_3PKE_0smallCT.scala:4:24: value should is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m  "R5N1_3PKE_0smallCT" should "give the same result as the KAT "in {[0m
+[0m[[0m[31merror[0m] [0m[0m                       ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5N1_5KEM_0d.scala:1:12: object scalatest is not a member of package org[0m
+[0m[[0m[31merror[0m] [0m[0mimport org.scalatest.FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0m           ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5N1_5KEM_0d.scala:3:36: not found: type FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0mclass KATTest_R5N1_5KEM_0d extends FlatSpec {[0m
+[0m[[0m[31merror[0m] [0m[0m                                   ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5N1_5KEM_0d.scala:4:18: value should is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m  "R5N1_5KEM_0d" should "give the same result as the KAT" in {[0m
+[0m[[0m[31merror[0m] [0m[0m                 ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5N1_5PKE_0d.scala:1:12: object scalatest is not a member of package org[0m
+[0m[[0m[31merror[0m] [0m[0mimport org.scalatest.FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0m           ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5N1_5PKE_0d.scala:3:36: not found: type FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0mclass KATTest_R5N1_5PKE_0d extends FlatSpec {[0m
+[0m[[0m[31merror[0m] [0m[0m                                   ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5N1_5PKE_0d.scala:4:18: value should is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m  "R5N1_5PKE_0d" should "give the same result as the KAT "in {[0m
+[0m[[0m[31merror[0m] [0m[0m                 ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_0KEM_2iot.scala:1:12: object scalatest is not a member of package org[0m
+[0m[[0m[31merror[0m] [0m[0mimport org.scalatest.FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0m           ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_0KEM_2iot.scala:3:38: not found: type FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0mclass KATTest_R5ND_0KEM_2iot extends FlatSpec {[0m
+[0m[[0m[31merror[0m] [0m[0m                                     ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_0KEM_2iot.scala:4:20: value should is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m  "R5ND_0KEM_2iot" should "give the same result as the KAT "in {[0m
+[0m[[0m[31merror[0m] [0m[0m                   ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_1KEM_0d.scala:1:12: object scalatest is not a member of package org[0m
+[0m[[0m[31merror[0m] [0m[0mimport org.scalatest.FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0m           ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_1KEM_0d.scala:3:36: not found: type FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0mclass KATTest_R5ND_1KEM_0d extends FlatSpec {[0m
+[0m[[0m[31merror[0m] [0m[0m                                   ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_1KEM_0d.scala:4:18: value should is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m  "R5ND_1KEM_0d" should "give the same result as the KAT" in {[0m
+[0m[[0m[31merror[0m] [0m[0m                 ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_1KEM_4longkey.scala:1:12: object scalatest is not a member of package org[0m
+[0m[[0m[31merror[0m] [0m[0mimport org.scalatest.FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0m           ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_1KEM_4longkey.scala:3:42: not found: type FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0mclass KATTest_R5ND_1KEM_4longkey extends FlatSpec {[0m
+[0m[[0m[31merror[0m] [0m[0m                                         ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_1KEM_4longkey.scala:4:24: value should is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m  "R5ND_1KEM_4longkey" should "give the same result as the KAT "in {[0m
+[0m[[0m[31merror[0m] [0m[0m                       ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_1KEM_5d.scala:1:12: object scalatest is not a member of package org[0m
+[0m[[0m[31merror[0m] [0m[0mimport org.scalatest.FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0m           ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_1KEM_5d.scala:3:36: not found: type FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0mclass KATTest_R5ND_1KEM_5d extends FlatSpec {[0m
+[0m[[0m[31merror[0m] [0m[0m                                   ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_1KEM_5d.scala:4:18: value should is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m  "R5ND_1KEM_5d" should "give the same result as the KAT" in {[0m
+[0m[[0m[31merror[0m] [0m[0m                 ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_1PKE_0d.scala:1:12: object scalatest is not a member of package org[0m
+[0m[[0m[31merror[0m] [0m[0mimport org.scalatest.FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0m           ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_1PKE_0d.scala:3:36: not found: type FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0mclass KATTest_R5ND_1PKE_0d extends FlatSpec {[0m
+[0m[[0m[31merror[0m] [0m[0m                                   ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_1PKE_0d.scala:5:18: value should is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m  "R5ND_1PKE_0d" should "give the same result as the KAT "in {[0m
+[0m[[0m[31merror[0m] [0m[0m                 ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_1PKE_5d.scala:1:12: object scalatest is not a member of package org[0m
+[0m[[0m[31merror[0m] [0m[0mimport org.scalatest.FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0m           ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_1PKE_5d.scala:3:36: not found: type FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0mclass KATTest_R5ND_1PKE_5d extends FlatSpec {[0m
+[0m[[0m[31merror[0m] [0m[0m                                   ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_1PKE_5d.scala:5:18: value should is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m  "R5ND_1PKE_5d" should "give the same result as the KAT "in {[0m
+[0m[[0m[31merror[0m] [0m[0m                 ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_3KEM_0d.scala:1:12: object scalatest is not a member of package org[0m
+[0m[[0m[31merror[0m] [0m[0mimport org.scalatest.FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0m           ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_3KEM_0d.scala:3:36: not found: type FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0mclass KATTest_R5ND_3KEM_0d extends FlatSpec {[0m
+[0m[[0m[31merror[0m] [0m[0m                                   ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_3KEM_0d.scala:4:18: value should is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m  "R5ND_3KEM_0d" should "give the same result as the KAT" in {[0m
+[0m[[0m[31merror[0m] [0m[0m                 ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_3KEM_5d.scala:1:12: object scalatest is not a member of package org[0m
+[0m[[0m[31merror[0m] [0m[0mimport org.scalatest.FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0m           ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_3KEM_5d.scala:3:36: not found: type FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0mclass KATTest_R5ND_3KEM_5d extends FlatSpec {[0m
+[0m[[0m[31merror[0m] [0m[0m                                   ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_3KEM_5d.scala:4:18: value should is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m  "R5ND_3KEM_5d" should "give the same result as the KAT" in {[0m
+[0m[[0m[31merror[0m] [0m[0m                 ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_3PKE_0d.scala:1:12: object scalatest is not a member of package org[0m
+[0m[[0m[31merror[0m] [0m[0mimport org.scalatest.FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0m           ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_3PKE_0d.scala:3:36: not found: type FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0mclass KATTest_R5ND_3PKE_0d extends FlatSpec {[0m
+[0m[[0m[31merror[0m] [0m[0m                                   ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_3PKE_0d.scala:4:18: value should is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m  "R5ND_3PKE_0d" should "give the same result as the KAT "in {[0m
+[0m[[0m[31merror[0m] [0m[0m                 ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_3PKE_5d.scala:1:12: object scalatest is not a member of package org[0m
+[0m[[0m[31merror[0m] [0m[0mimport org.scalatest.FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0m           ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_3PKE_5d.scala:3:36: not found: type FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0mclass KATTest_R5ND_3PKE_5d extends FlatSpec {[0m
+[0m[[0m[31merror[0m] [0m[0m                                   ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_3PKE_5d.scala:4:18: value should is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m  "R5ND_3PKE_5d" should "give the same result as the KAT "in {[0m
+[0m[[0m[31merror[0m] [0m[0m                 ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_5KEM_0d.scala:1:12: object scalatest is not a member of package org[0m
+[0m[[0m[31merror[0m] [0m[0mimport org.scalatest.FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0m           ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_5KEM_0d.scala:3:36: not found: type FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0mclass KATTest_R5ND_5KEM_0d extends FlatSpec {[0m
+[0m[[0m[31merror[0m] [0m[0m                                   ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_5KEM_0d.scala:4:18: value should is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m  "R5ND_5KEM_0d" should "give the same result as the KAT" in {[0m
+[0m[[0m[31merror[0m] [0m[0m                 ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_5KEM_5d.scala:1:12: object scalatest is not a member of package org[0m
+[0m[[0m[31merror[0m] [0m[0mimport org.scalatest.FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0m           ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_5KEM_5d.scala:3:36: not found: type FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0mclass KATTest_R5ND_5KEM_5d extends FlatSpec {[0m
+[0m[[0m[31merror[0m] [0m[0m                                   ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_5KEM_5d.scala:4:18: value should is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m  "R5ND_5KEM_5d" should "give the same result as the KAT" in {[0m
+[0m[[0m[31merror[0m] [0m[0m                 ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Florent\Desktop\TB\Round5\src\test\scala\KATTest_R5ND_5PKE_0d.scala:1:12: object scalatest is not a member of package org[0m
+[0m[[0m[31merror[0m] [0m[0mimport org.scalatest.FlatSpec[0m
+[0m[[0m[31merror[0m] [0m[0m           ^[0m
+[0m[[0m[31merror[0m] [0m[0m155 errors found[0m

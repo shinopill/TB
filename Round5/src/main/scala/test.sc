@@ -10,11 +10,6 @@ t & 0xFF
 t.toBinaryString
 val z = 1
 
-import org.apache.commons.math3._
-import org.apache.commons.math3.complex.Complex
-import org.apache.commons.math3.transform.{DftNormalization, FastFourierTransformer, TransformType}
-
-
 val tt  = 255.toByte
 val q = ((tt & 0xFF) >>> 9) & 1
 val sb = StringBuilder.newBuilder

@@ -1,3 +1,7 @@
+/**
+  * @author Florent Piller
+  */
+
 import DRGB.{drgb_init, drgb_init_customization, drgb_sample_16_2, drgb_sample_16_2_all_size, drgb_sampler16}
 import params.{d, f, h, kappa, len_tau_2, m_bar, mu, n, n_bar, p, q, t, tau, xe}
 import no.uib.cipr.matrix._
@@ -6,7 +10,15 @@ import scala.annotation.tailrec
 import scala.collection.mutable.ListBuffer
 object core {
 
-
+  /**
+    * Function to multiply two matrix if the polynomials have only one coefficient
+    *
+    * @param a   the first matrix
+    * @param b   the second matrix
+    * @param n  the length of the polynomial coefficient array
+    * @param mod the modulus of polynomial coefficient
+    * @return the multiplication of a and b
+    */
   def mult_matrix_n1(a: Array[Array[Polynomial]], b: Array[Array[Polynomial]], n: Int, mod: Int) = {
     val a_lift = Array.ofDim[Double](a.length,a(0).length)
     val b_lift = Array.ofDim[Double](b.length,b(0).length)
@@ -33,8 +45,8 @@ object core {
     *
     * @param a   the first matrix
     * @param b   the second matrix
-    * @param n   the length of the Polynome_chars
-    * @param mod the mod for the coefficiants of the polybomes
+    * @param n   the length of the polynomial coefficient array
+    * @param mod the mod for the coefficients of the polynomial
     * @return
     */
 
@@ -49,7 +61,7 @@ object core {
           a(0).indices foreach (k => {
             a(i)(k).mod = mod
             b(k)(j).mod = mod
-            var tmp = a(i)(k).*(b(k)(j))
+            val tmp = a(i)(k).*(b(k)(j))
             C(i)(j) = C(i)(j).+(tmp)
           })
         })
@@ -70,9 +82,8 @@ object core {
     if (d == n) {
       (0 until mu) map (v => M(0)(0).coef(v)) toArray
     } else {
-      var array = Array.ofDim[Char](mu)
+      val array = Array.ofDim[Char](mu)
       val nb_col = M(0).length
-      val nb_row = M.length
       (0 until mu) foreach (i => array(i) = M(i / (nb_col * n))((i / n) % (nb_col)).coef(i % n))
       array
     }
@@ -81,7 +92,7 @@ object core {
   /**
     * Function that converts a Bitstring into mu elements
     *
-    * @param m      The message to ceonvert
+    * @param m      The message to convert
     * @param b_bits the size in bits of each elements
     * @param t_bits the wanted size of the mu elements
     * @return An array with MU elements
@@ -89,7 +100,6 @@ object core {
   def add_msg(M: Array[Array[Polynomial]], m: BitString, b_bits: Int, t_bits: Int) = {
     val v = Array.fill[BitString](mu)(new BitString(""))
     val nb_col = M(0).length
-    val nb_row = M.length
     val poly_size = M(0)(0).coef.length
     //scale m from b to t bits
     v.indices.foreach(i => {
@@ -121,17 +131,17 @@ object core {
     * @param mod the modulo for the substaction
     */
   def diff_msg(m1: Array[Char], m2: Array[Char], mod: Int): Array[Char] = {
-    var array = Array.ofDim[Char](m1.length)
+    val array = Array.ofDim[Char](m1.length)
     m1.indices.foreach(i => array(i) = ((m1(i) - m2(i) % mod)).toChar)
     array
   }
 
   /**
-    * Conmpute the difference between  mu elementes
+    * Conmpute the difference between  mu elements
     *
     * @param m1  the first array of element
     * @param m2  the second array of element
-    * @param mod the modulo for the substaction
+    * @param mod the modulo for the substraction
     */
   def diff_msg(m1: Array[BitString], m2: Array[BitString], mod: Int): Array[BitString] = {
     val x = m1 map (y => y.toChar)
@@ -230,6 +240,15 @@ object core {
     matrix
   }
 
+  /**
+    * Function to decompress coefficients wise a vector
+    *
+    * @param vector the vector to decompress
+    * @param a_bits length in bits for the coeffs at the begining
+    * @param b_bits length in bits at then coeffs end
+    */
+
+
   def decompress_vector(vector: Array[BitString], a_bits: Int, b_bits: Int): Array[BitString] = {
     vector.foreach(v => v.bits = decompress(v, a_bits, b_bits).bits)
     vector
@@ -278,7 +297,7 @@ object core {
     *
     * @param length         the lenght of the vector
     * @param hamming_weight the hamming wight of the vector
-    * @return
+    * @return a vector with hamming_weight/2 1  and  hamming_weight/2 -1
     */
 
   def create_secret_vector(length: Int, hamming_weight: Int): Array[Char] = {
@@ -309,13 +328,12 @@ object core {
     * Create the secret matrix A
     *
     * @param sigma the seed for the matrix
-    * @return the matriy A
+    * @return the matrix A
     */
   def create_A(sigma: Array[Byte]): Array[Array[Polynomial]] = {
     drgb_init(sigma.slice(0,kappa/8))
     val nb_poly = d / n
     val matrix = Array.ofDim[Polynomial](nb_poly, nb_poly)
-
 
     tau match {
       case 0 =>
@@ -339,10 +357,7 @@ object core {
       case 2 =>
         val a_master =  DRGB.drgb_sample_16_2_all_size(q,len_tau_2)  //(for (i <- 0 until len_tau_2) yield drgb_sample_16_2(q)).toArray
         val p2 = permutation_tau_2(sigma)
-        /*
-        (0 until d).foreach(i => (0 until d)
-          .foreach(j => matrix(i)(j) = new Polynomial_char(Array[Char](a_master((j + p2(i)) % len_tau_2)), false, q)))
-          */
+
         @tailrec
         def loop(p2 : Array[Char], a_master : Array[Char],i: Int, j : Int , matrix : Array[Array[Polynomial]]):  Array[Array[Polynomial]] ={
           matrix(i)(j) = new Polynomial(Array[Char](a_master((j + p2(i)) % len_tau_2)), false, q)
@@ -367,9 +382,8 @@ object core {
     */
   def create_S_T(seed: Array[Byte]): Array[Array[Polynomial]] = {
     drgb_init(seed.slice(0,kappa/8))
-    var matrix = Array.ofDim[Char](n_bar, d)
+    val matrix = Array.ofDim[Char](n_bar, d)
     0 until n_bar foreach (a => matrix(a) = create_secret_vector(d, h))
-    matrix
     charMatrixToPolyMatrix(matrix, q, f != 0 && xe != 0)
   }
 
@@ -379,14 +393,19 @@ object core {
     */
   def create_R_T(seed: Array[Byte]): Array[Array[Polynomial]] = {
     drgb_init(seed.slice(0,kappa/8))
-
-    var matrix = Array.ofDim[Char](m_bar, d)
+    val matrix = Array.ofDim[Char](m_bar, d)
     0 until m_bar foreach (a => matrix(a) = create_secret_vector(d, h))
-    matrix
     charMatrixToPolyMatrix(matrix, p, f != 0 && xe != 0 )
   }
 
-  def charArrayToBitStringArray(a: Array[Char], element_size: Int): Array[BitString] = {
+  /**
+    * Function to transform a char array to a bitString array
+    * @param a            the array of char
+    * @param element_size the size of the element in the bitString
+    * @return             the bitString array with element of size element_size
+    */
+
+   def charArrayToBitStringArray(a: Array[Char], element_size: Int): Array[BitString] = {
     val array = Array.ofDim[BitString](a.length)
     a.indices foreach (i => array(i) = {
       val b = new BitString("")
@@ -401,13 +420,21 @@ object core {
     array
   }
 
+  /**
+    * Function to transform a char matrix into a matrix of polynomials
+    *
+    * @param a    The char matrix
+    * @param mod  The modulus for the polynomials
+    * @param isXi The ring used
+    * @return     The polynomial matrix corresponding to the char
+    */
   def charMatrixToPolyMatrix(a: Array[Array[Char]], mod: Int, isXi : Boolean): Array[Array[Polynomial]] = {
     val nb_row = a.length
     val nb_col = a(0).length
     val nbr_elem = nb_col * nb_row
-    val nb_poly_per_row = d / n
     val matrix = Array.ofDim[Polynomial](a.length, nb_col / n)
     var coefs = Array.ofDim[Char](n)
+
     (0 until nbr_elem).foreach(i => {
       coefs(i % n) = a(i / nb_col)(i % nb_col)
       if (n == 1 || i % d == (d-1)) {

@@ -1,3 +1,7 @@
+/**
+  * @author Florent Piller
+  */
+
 import params.{xe, kappa, f, mu}
 
 object xef {
@@ -24,7 +28,7 @@ object xef {
       case 2 => (1, 0)
       case 4 => (3, 0)
       case 5 => (4, 0)
-      case _ => (6, 6)
+      case _ => (6,6)
     }
     case 192 => xe match {
       case 163 => (3, 1)

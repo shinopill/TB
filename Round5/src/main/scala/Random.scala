@@ -6,5 +6,4 @@ object Random {
   def init(seed : Array[Byte]) = {
     random = new SecureRandom(seed)
   }
-
 }
